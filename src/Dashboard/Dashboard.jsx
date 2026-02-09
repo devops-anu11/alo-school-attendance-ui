@@ -14,6 +14,7 @@ import Loader from "../loader/Loader";
 import noDataImg from "../assets/AloLogo/nodatasearch.png";
 import EndBreakModal from "./EndBreakModal";
 
+
 import {
   getUserId,
   getAttendance,
@@ -32,13 +33,13 @@ const Dashboard = () => {
 
   const [user, setUser] = useState(null);
 
-  // fullAttendance = ALL records fetched from server (formatted)
+ 
   const [fullAttendance, setFullAttendance] = useState([]);
 
-  // attendanceTable = filtered list shown in table (thisMonth / pastMonth)
+
   const [attendanceTable, setAttendanceTable] = useState([]);
 
-  // attendanceId used for actions (we keep it pointing to today's attendance when exists)
+  
   const [attendanceId, setAttendanceId] = useState(null);
 
   const [checkInStatus, setCheckInStatus] = useState(false);
@@ -53,6 +54,9 @@ const Dashboard = () => {
   const [isCheckingIn, setIsCheckingIn] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isTakingBreak, setIsTakingBreak] = useState(false);
+const [isEndingBreak, setIsEndingBreak] = useState(false);
+
 
   const [filter, setFilter] = useState("thisMonth");
   const [event, setEvent] = useState([]);
@@ -70,15 +74,13 @@ const Dashboard = () => {
 
   const [selectedRemark, setSelectedRemark] = useState(null);
 
-  // Today record (single source of truth for button state)
+ 
   const [todayRecord, setTodayRecord] = useState(null);
 
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
-  /* -------------------------
-     Fetch user
-  ------------------------- */
+ 
   const fetchUser = async () => {
     try {
       const res = await getUserId(userId);
@@ -91,9 +93,7 @@ const Dashboard = () => {
     }
   };
 
-  /* -------------------------
-     Late / Permission counts
-  ------------------------- */
+
   const fetchLateCount = async () => {
     try {
       const response = await attCardCalculation(userId);
@@ -105,22 +105,15 @@ const Dashboard = () => {
     }
   };
 
-  /* -------------------------
-     Fetch attendance (IMPORTANT)
-     - Always fetch ALL attendance (no server-side month filter)
-     - Format, set fullAttendance
-     - Client-side filter to set attendanceTable (thisMonth / pastMonth)
-     - Find today's record and set todayRecord
-  ------------------------- */
+  
   const fetchAttendance = async (showLoader = true) => {
     try {
       if (showLoader) setLoading(true);
 
-      // Always fetch all months from server (pass false for monthFlag)
+     
       const response = await getAttendance(userId, false);
       const allData = response.data.data.data || [];
 
-      // 1) Format data and keep rawDate
       const formattedAll = allData.map((att) => {
         let formatted = { ...att };
         if (att.date) {
@@ -135,11 +128,8 @@ const Dashboard = () => {
         }
         return formatted;
       });
-
-      // store full attendance (formatted) - used to compute today/others
       setFullAttendance(formattedAll);
 
-      // 2) Client-side filter for table view based on `filter`
       const now = new Date();
       const filtered = formattedAll.filter((att) => {
         if (!att.rawDate) return false;
@@ -147,7 +137,7 @@ const Dashboard = () => {
         if (filter === "thisMonth") {
           return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
         } else {
-          // pastMonth -> last month
+          
           const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
           return d.getMonth() === lastMonth.getMonth() && d.getFullYear() === lastMonth.getFullYear();
         }
@@ -155,7 +145,6 @@ const Dashboard = () => {
 
       setAttendanceTable(filtered);
 
-      // 3) Find today's record from full data (raw)
       const todayStr = new Date().toISOString().split("T")[0];
       const todayRec = formattedAll.find((a) => {
         if (!a.rawDate) return false;
@@ -165,7 +154,6 @@ const Dashboard = () => {
 
       setTodayRecord(todayRec);
 
-      // set attendanceId to today's record id (if exists) so actions act on today's record
       if (todayRec && todayRec._id) {
         setAttendanceId(todayRec._id);
         setOnPermission(todayRec.onPermission === true);
@@ -176,13 +164,13 @@ const Dashboard = () => {
         setOnEarlyPermission(false);
       }
 
-      // 4) Keep your per/earlyPer logic (first formatted row if any)
+    
       if (formattedAll.length > 0) {
         setPer(formattedAll[0]._id);
         setEarlyPer(formattedAll[0]._id);
       }
 
-      // 5) Attendance rate (unchanged)
+     
       try {
         function formatDate(date) {
           const yyyy = date.getFullYear();
@@ -212,9 +200,6 @@ const Dashboard = () => {
     }
   };
 
-  /* -------------------------
-     Events
-  ------------------------- */
   const fetchEvents = async () => {
     try {
       setLoadingEvents(true);
@@ -227,9 +212,7 @@ const Dashboard = () => {
     }
   };
 
-  /* -------------------------
-     Effects
-  ------------------------- */
+ 
   useEffect(() => {
     if (!userId) navigate("/");
     else {
@@ -237,57 +220,62 @@ const Dashboard = () => {
       fetchAttendance(true);
       fetchLateCount();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [navigate, userId]);
 
-  // When filter changes, we already fetch all attendance on mount,
-  // but fetchAttendance will re-run and apply client-side filter again.
+  
   useEffect(() => {
     if (userId) fetchAttendance(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [filter, userId]);
 
   useEffect(() => {
     fetchEvents();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
-  // Use todayRecord for timer instead of attendanceTable[0]
-  useEffect(() => {
-    if (!todayRecord?.inTime) {
+
+ useEffect(() => {
+  
+  if (!todayRecord?.inTime) {
+    setTimeElapsed("00:00:00");
+    setCheckInTime(null);
+    return;
+  }
+
+  if (todayRecord?.outTime) {
+    setTimeElapsed(todayRecord.totalWorkHours || "00:00:00");
+    return;
+  }
+
+ 
+  const startTime = new Date(todayRecord.inTime);
+  setCheckInTime(startTime);
+
+  const timer = setInterval(() => {
+    
+    const currentTime = new Date(new Date().getTime() + (5 * 60 + 30) * 60000);
+    let diff = currentTime - startTime;
+
+    if (diff < 0) {
       setTimeElapsed("00:00:00");
-      setCheckInTime(null);
       return;
     }
 
-    const inTime = todayRecord.inTime;
-    const startTime = inTime ? new Date(inTime) : null;
-    setCheckInTime(startTime);
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    const timer = setInterval(() => {
-      if (!startTime) return;
-      // convert to IST offset handling - original used +5:30
-      const currentTime = new Date(new Date().getTime() + (5 * 60 + 30) * 60000);
-      let timeDifference = currentTime - startTime;
+    setTimeElapsed(
+      `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    );
+  }, 1000);
 
-      if (timeDifference < 0) {
-        setTimeElapsed("00:00:00");
-        return;
-      }
+  return () => clearInterval(timer);
+}, [todayRecord]);
 
-      const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-      setTimeElapsed(`${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [todayRecord]);
-
-  /* -------------------------
-     Actions
-  ------------------------- */
   const handleCheckIn = async () => {
     if (isCheckingIn) return;
     setIsCheckingIn(true);
@@ -326,59 +314,75 @@ const Dashboard = () => {
     }
   };
 
-  // Start break — now allow only one break per day
-  const handleStartBreak = async () => {
-    if (!attendanceId) {
-      toast.error("No active attendance record found!", { autoClose: 1000 });
+
+ const handleStartBreak = async () => {
+
+  if (isTakingBreak) return;
+  setIsTakingBreak(true);
+
+  if (!attendanceId) {
+    toast.error("No active attendance record found!", { autoClose: 1000 });
+    setIsTakingBreak(false);
+    return;
+  }
+
+  try {
+   
+    const breakCount = todayRecord?.breakTime?.length || 0;
+
+    if (breakCount >= 1) {
+      toast.error("You have already taken a break today!", { autoClose: 1000 });
+      setIsTakingBreak(false);
       return;
     }
 
-    try {
-      // compute break count from todayRecord
-      const breakCount = todayRecord?.breakTime?.length || 0;
+    const response = await startBreak(attendanceId, new Date().toISOString());
+    const updatedBreakStatus = response.data.data?.breakStatus;
+    setBreakStatus(updatedBreakStatus);
 
-      if (breakCount >= 1) {
-        toast.error("You have already taken a break today!", { autoClose: 1000 });
-        return;
-      }
+    await fetchAttendance(false);
+    await fetchUser();
 
-      const response = await startBreak(attendanceId, new Date().toISOString());
-      const updatedBreakStatus = response.data.data?.breakStatus;
-      setBreakStatus(updatedBreakStatus);
+    toast.success("Break started successfully!", { autoClose: 1000 });
+    setBreakModalOpen(false);
+  } catch (err) {
+    console.error("Error starting break:", err);
+    toast.error("Failed to start break", { autoClose: 1000 });
+  }
 
-      await fetchAttendance(false);
-      await fetchUser();
+  setIsTakingBreak(false);
+};
 
-      toast.success("Break started successfully!", { autoClose: 1000 });
-      setBreakModalOpen(false);
-    } catch (err) {
-      console.error("Error starting break:", err);
-      toast.error("Failed to start break", { autoClose: 1000 });
-    }
-  };
-
-  // End break — using same API (your code used startBreak for end as well)
+  
   const handleEndBreak = async () => {
-    if (!attendanceId) {
-      toast.error("No active attendance record found!", { autoClose: 1000 });
-      return;
-    }
 
-    try {
-      // call same startBreak function (server toggles break status)
-      const response = await startBreak(attendanceId, new Date().toISOString());
-      const updatedBreakStatus = response.data.data?.breakStatus;
-      setBreakStatus(updatedBreakStatus);
+  
+  if (isEndingBreak) return;
+  setIsEndingBreak(true);
 
-      await fetchAttendance(false);
-      await fetchUser();
+  if (!attendanceId) {
+    toast.error("No active attendance record found!", { autoClose: 1000 });
+    setIsEndingBreak(false);
+    return;
+  }
 
-      toast.success("Break ended successfully!", { autoClose: 1000 });
-    } catch (err) {
-      console.error("Error ending break:", err);
-      toast.error("Failed to end break", { autoClose: 1000 });
-    }
-  };
+  try {
+   
+    const response = await startBreak(attendanceId, new Date().toISOString());
+    const updatedBreakStatus = response.data.data?.breakStatus;
+    setBreakStatus(updatedBreakStatus);
+
+    await fetchAttendance(false);
+    await fetchUser();
+
+    toast.success("Break ended successfully!", { autoClose: 1000 });
+  } catch (err) {
+    console.error("Error ending break:", err);
+    toast.error("Failed to end break", { autoClose: 1000 });
+  }
+
+  setIsEndingBreak(false);
+};
 
   const handleCheckoutConfirm = async (remarks) => {
     if (isCheckingOut) return;
@@ -387,7 +391,7 @@ const Dashboard = () => {
     try {
       const checkoutTime = new Date().toISOString();
       await checkOut(attendanceId, remarks, userId, checkoutTime);
-
+     
       await fetchAttendance(false);
       await fetchUser();
       toast.success("Checkout successful!", { autoClose: 1000 });
@@ -406,28 +410,17 @@ const Dashboard = () => {
 
   const handleCheckOut = () => setCheckoutOpen(true);
 
-  /* -------------------------
-     Derived booleans from todayRecord (SINGLE SOURCE OF TRUTH)
-     - isCheckedIn: true when todayRecord has inTime
-     - isOnBreak: true when todayRecord.breakStatus === true (or breakTime active)
-     - isCheckedOut: true when todayRecord.outTime present
-     - breakCount: todayRecord.breakTime?.length
-  ------------------------- */
+  
   const isCheckedIn = Boolean(todayRecord?.inTime);
   const isCheckedOut = Boolean(todayRecord?.outTime);
-  // breakStatus may also come from user... prefer today's record value if available
+ 
   const isOnBreak = Boolean(todayRecord?.breakStatus) || breakStatus === true;
   const breakCount = todayRecord?.breakTime?.length || 0;
 
-  /* -------------------------
-     hasCheckedInToday - used to disable the check-in button when user already checked in today
-     (checks todayRecord)
-  ------------------------- */
+  
   const hasCheckedInToday = !!(todayRecord && todayRecord.inTime && !todayRecord.deleted);
 
-  /* -------------------------
-     Helpers for table formatting
-  ------------------------- */
+  
   const tableFormatTime = (timestamp) => {
     if (!timestamp) return "-";
     const adjustedTime = moment.utc(timestamp);
@@ -480,9 +473,6 @@ const Dashboard = () => {
   const paginatedRows = rows.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   const pageCount = Math.ceil(rows.length / rowsPerPage);
 
-  /* -------------------------
-     Render
-  ------------------------- */
   return (
     <div className={styles.container}>
       {loading && <Loader />}
@@ -495,38 +485,55 @@ const Dashboard = () => {
         <div className={styles.second}>
           <p className={styles.subtitle}>Your future starts with today’s attendance</p>
           <div className={styles.check}>
-            {/* ---------- BUTTON AREA using todayRecord ONLY ---------- */}
+   
             {!isCheckedIn && !isCheckedOut ? (
-              // Not checked in → show Check-in button
+              
               <button
-                disabled={hasCheckedInToday}
-                onClick={() => {
-                  if (!hasCheckedInToday) setCheckInModalOpen(true);
-                }}
-                className={hasCheckedInToday ? styles.disabledCheckIn : styles.checkIn}
-              >
-                {hasCheckedInToday ? "" : "Check-in"}
-              </button>
+  disabled={hasCheckedInToday || isCheckingIn}
+  onClick={() => {
+    if (!hasCheckedInToday && !isCheckingIn) setCheckInModalOpen(true);
+  }}
+  className={hasCheckedInToday || isCheckingIn ? styles.disabledCheckIn : styles.checkIn}
+>
+  {isCheckingIn ? "Processing..." : "Check-in"}
+</button>
+
             ) : isOnBreak && !isCheckedOut ? (
-              // Currently on break → show End Break
-              <button className={styles.break} onClick={() => setEndBreakModalOpen(true)}>
-                End Break
-              </button>
+              
+              <button
+  className={styles.break}
+  disabled={isEndingBreak}          
+  onClick={() => setEndBreakModalOpen(true)}
+>
+  {isEndingBreak ? "Processing..." : "End Break"}   
+</button>
+
             ) : (
               <>
-                {/* Take Break (only if checked in, not on break, not checked out, and haven't taken break today) */}
-                {isCheckedIn && !isOnBreak && !isCheckedOut && breakCount < 1 && (
-                  <button className={styles.break} onClick={() => setBreakModalOpen(true)}>
-                    Take Break
-                  </button>
-                )}
+               
+               {isCheckedIn && !isOnBreak && !isCheckedOut && breakCount < 1 && (
+    <button
+      className={styles.break}
+      disabled={isTakingBreak}    
+      onClick={() => setBreakModalOpen(true)}
+    >
+      {isTakingBreak ? "Processing..." : "Take Break"}   
+    </button>
+  )}
 
-                {/* Checkout (show when checked in and not checked out) */}
+                
                 {isCheckedIn && !isCheckedOut && (
-                  <button className={styles.checkOut} onClick={() => setCheckoutOpen(true)}>
-                    Check-out
-                  </button>
-                )}
+  <button
+    className={styles.checkOut}
+    disabled={isCheckingOut}           
+    onClick={() => {
+      if (!isCheckingOut) setCheckoutOpen(true);
+    }}
+  >
+    {isCheckingOut ? "Processing..." : "Check-out"}
+  </button>
+)}
+
               </>
             )}
           </div>
@@ -582,6 +589,27 @@ const Dashboard = () => {
             </p>
           </div>
         </div>
+        {/* <div className={styles.col}>
+          <div className={styles.card}>
+            <button className={styles.circle1}>TP</button>
+            <h4>Term Percentage</h4>
+            <p>
+              Percentage :
+              {attendanceRate !== null ? (attendanceRate.toString().includes("%") ? attendanceRate : `${attendanceRate}%`) : "Loading..."}
+            </p>
+          </div>
+        </div>
+        <div className={styles.col}>
+          <div className={styles.card}>
+            <button className={styles.circle1}>SE</button>
+            <h4>Semester Percentage</h4>
+            <p>
+              Percentage :
+              {attendanceRate !== null ? (attendanceRate.toString().includes("%") ? attendanceRate : `${attendanceRate}%`) : "Loading..."}
+            </p>
+          </div>
+        </div> */}
+
       </div>
 
       <div className={styles.tableContainer}>
@@ -650,7 +678,7 @@ const Dashboard = () => {
                     <td>{row.breakTime}</td>
                     <td>{row.classHours}</td>
                     <td>{row.permission}</td>
-                    <td></td>
+                    {/* <td></td> */}
                   </tr>
                 )
               )
@@ -718,13 +746,35 @@ const Dashboard = () => {
       <CheckInModal
         isOpen={isCheckInModalOpen}
         onClose={() => setCheckInModalOpen(false)}
-        onConfirm={async () => {
-          await handleCheckIn();
-          setCheckInModalOpen(false);
-        }}
+       onConfirm={async () => {
+  if (isCheckingIn) return; 
+
+  setIsCheckingIn(true);
+
+  await handleCheckIn();      
+  setIsCheckingIn(false);
+  setCheckInModalOpen(false);
+}}
+
       />
 
-      <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setCheckoutOpen(false)} onCheckout={handleCheckoutConfirm} />
+      <CheckoutModal
+  isOpen={isCheckoutOpen}
+  onClose={() => setCheckoutOpen(false)}
+  onCheckout={async (selectedRemark) => {
+
+    if (isCheckingOut) return;  
+
+    setIsCheckingOut(true);   
+
+    await handleCheckoutConfirm(selectedRemark);
+
+    setIsCheckingOut(false);
+    setCheckoutOpen(false);
+  }}
+  isCheckingOut={isCheckingOut}  
+/>
+
     </div>
   );
 };

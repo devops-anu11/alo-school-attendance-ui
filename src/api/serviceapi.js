@@ -80,7 +80,7 @@ export const updateNotification = (notificationId,read) => {
 }
 
 
-//update Attendance
+
 export const updateAttendance=(id,time,userId)=>{
   return apiService.put(`/attendance/${id}`, {
     inTime: time,
@@ -97,3 +97,26 @@ export const getAttendanceRate = (userId, fromDate, toDate) =>{
   return apiService.get( `/attendance/studentrate?userId=${userId}&fromDate=${fromDate}&toDate=${toDate}`
   );
 }
+
+
+
+export const getPerformance = ({ userId, academic, exam }) => {
+  return apiService.get(
+    `/performance?userId=${userId}&Academic=${academic}&exam=${exam}`
+  );
+};
+
+
+
+
+export const getLeaderboard = (academic) => {
+  return apiService.get("/performance/leaderboard", {
+    params: {
+      Academic: academic,
+       
+    },
+  });
+};
+
+
+
