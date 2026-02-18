@@ -53,6 +53,28 @@ const Academics = () => {
       setLoading(false);
     }
   };
+  const handleDownload = async (url) => {
+  try {
+    if (!url) return;
+
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = blobUrl;
+    link.download = "revaluation.pdf"; 
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error("Download failed", error);
+  }
+};
+
 
   return (
     <div className={styles.container}>
@@ -105,7 +127,6 @@ const Academics = () => {
         )}
       </div>
 
-      {/* TABLE */}
       <div className={styles.tableWrapper}>
         {loading ? (
           <p className={styles.loading}>Loading...</p>
@@ -153,31 +174,18 @@ const Academics = () => {
     : "P"}
 </td>
  <td>
-          {mark.revaluationUrl ? (
-            <>
-          
-              <a
-                href={mark.revaluationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.viewBtn}
-              >
-                View
-              </a>
+  {mark.revaluationUrl ? (
+    <button
+      className={styles.downloadBtn}
+      onClick={() => handleDownload(mark.revaluationUrl)}
+    >
+      Download
+    </button>
+  ) : (
+    <span>-</span>
+  )}
+</td>
 
-         
-              <a
-                href={mark.revaluationUrl}
-                download
-                className={styles.downloadBtn}
-              >
-                Download
-              </a>
-            </>
-          ) : (
-            <span>-</span>
-          )}
-        </td>
 
                   </tr>
                 ))
