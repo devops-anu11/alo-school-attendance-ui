@@ -230,11 +230,27 @@ const Header = ({ handleLogout }) => {
             }`}
             onClick={() => handleNavClick(`/academics/${userId}`)}
           >
-           Academics
+            Academics
+          </button>
+          <button
+            className={`${styles.linkBtn} ${
+              location.pathname.includes("/complaint") ? styles.activeLink : ""
+            }`}
+            onClick={() => handleNavClick(`/complaint/${userId}`)}
+          >
+            Complaint
+          </button>
+
+          <button
+            className={`${styles.linkBtn} ${
+              location.pathname.includes("/harassment") ? styles.activeLink : ""
+            }`}
+            onClick={() => handleNavClick(`/harassment/${userId}`)}
+          >
+            Harassment
           </button>
         </div>
       </nav>
-
 
       <div className={`${styles.rightSection} ${styles.hideOnMobile}`}>
         <div className={styles.profile}>

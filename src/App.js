@@ -8,7 +8,9 @@ import Login from "./Login/Login";
 import PrivateRoute from "./api/PrivateRouter";
 import Header from "./Layouts/Header";
 import { useState, useEffect } from "react";
-import ScrollToTop from "./ScrollToTop";   // ✅ import here
+import ScrollToTop from "./ScrollToTop";   
+import Complaint from "./Complaint/Complaint";
+import Harassment from "./Harassement/Harassment";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -47,15 +49,16 @@ function App() {
           path="/login"
           element={
             isAuthenticated ? (
-              
-              <Navigate to={ `/dashboard/${localStorage.getItem("userId")}`} replace />
+              <Navigate
+                to={`/dashboard/${localStorage.getItem("userId")}`}
+                replace
+              />
             ) : (
               <Login setLoginUser={setIsAuthenticated} />
             )
           }
         />
 
-       
         <Route
           path="/dashboard/:userId"
           element={
@@ -82,11 +85,28 @@ function App() {
             </PrivateRoute>
           }
         />
-          <Route
+        <Route
           path="/academics/:userId"
           element={
             <PrivateRoute isAuthenticated={isAuthenticated}>
               <Academics />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/complaint/:userId"
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <Complaint/>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/harassment/:userId"
+          element={
+            <PrivateRoute isAuthenticated={isAuthenticated}>
+              <Harassment/>
             </PrivateRoute>
           }
         />

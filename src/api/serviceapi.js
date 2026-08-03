@@ -118,5 +118,16 @@ export const getLeaderboard = (academic) => {
   });
 };
 
+export const createComplaint = (complaintData) => {
+  return apiService.post("/complaint/create", complaintData);
+};
+
+export const getComplaint = (studentId) => {
+  return apiService.get(`/complaint/${studentId}`);
+};
+
+export const createHarassment = (harassmentData) => {
+  return apiService.post("/harassment/create", harassmentData);
+};
 
 

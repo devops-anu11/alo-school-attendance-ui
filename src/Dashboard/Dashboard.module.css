@@ -17,7 +17,7 @@
 .container::-webkit-scrollbar {
   width: 0px;
   height: 0px;
-  background: transparent; /* fully hides */
+  background: transparent;
 }
 
 
@@ -84,11 +84,7 @@
   background: #c72c1d;
 }
 
-/* ================= Events Marquee ================= */
 
-
-/* ================= Cards ================= */
-/* Dashboard.module.css */
 .cardRow {
         flex: 0 0 auto;
         display: grid;
@@ -303,7 +299,6 @@ td {
 @media (max-width: 480px) {
   .welcome {
     font-size: 20px;
-    text-align: center;
   }
 
   .subtitle {
@@ -325,7 +320,7 @@ td {
   }
 
   .cardRow {
-    grid-template-columns: 1fr; /* stack cards */
+    grid-template-columns: 1fr; 
     gap: 12px;
   }
 
@@ -408,7 +403,7 @@ td {
 
 
 .checkIn:disabled {
-  cursor: not-allowed;      /* red circle with slash 🚫 */
+  cursor: not-allowed;     
 }
 .break {
   color: white;
@@ -421,24 +416,16 @@ td {
   transition: 0.3s;
   background: #2d8011;
   display: flex;
-  align-items: center;   /* ✅ vertically center text */
-  justify-content: center; /* ✅ horizontally center text */
+  align-items: center;   
+  justify-content: center;
   height: fit-content;
   width: auto;
 }
 
-/* ✅ Mobile responsive adjustment */
-@media (max-width: 768px) {
-  .break {
-    width: 100%;              /* full width on mobile */
-    justify-content: center;  /* ensure text stays centered */
-    text-align: center;
-    padding: 14px 0;          /* balanced spacing */
-    font-size: 15px;          /* slightly smaller text for mobile */
+
+@media (max-width: 992px) {
+   .check {
+    display: none;
   }
 }
-/* .disabledCheckIn {
-  background: grey !important;
-  cursor: not-allowed !important;
-  opacity: 0.6;
-} */
+
