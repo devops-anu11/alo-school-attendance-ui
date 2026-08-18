@@ -335,21 +335,30 @@ const [loading, setLoading] = useState(false);
                     handleTimeChange(time, timeString, "fromTime")
                   }
                   placeholder="From"
-                  disabledHours={() => {
-                    const currentHour = new Date().getHours();
-                    return Array.from({ length: currentHour }, (_, i) => i); // disable all past hours
-                  }}
-                  disabledMinutes={(selectedHour) => {
-                    const now = new Date();
-                    if (selectedHour === now.getHours()) {
-                      // disable past minutes if user is selecting current hour
-                      return Array.from(
-                        { length: now.getMinutes() },
-                        (_, i) => i
-                      );
-                    }
-                    return [];
-                  }}
+             disabledHours={() => {
+  const selectedDate = formData.permissionDate?.format("YYYY-MM-DD");
+  const today = new Date().toISOString().split("T")[0];
+
+  if (selectedDate !== today) return [];
+
+  const currentHour = new Date().getHours();
+  return Array.from({ length: currentHour }, (_, i) => i);
+}}
+
+disabledMinutes={(selectedHour) => {
+  const selectedDate = formData.permissionDate?.format("YYYY-MM-DD");
+  const today = new Date().toISOString().split("T")[0];
+
+  if (selectedDate !== today) return [];
+
+  const now = new Date();
+
+  if (selectedHour === now.getHours()) {
+    return Array.from({ length: now.getMinutes() }, (_, i) => i);
+  }
+
+  return [];
+}}
                 />
 
                 <TimePicker
@@ -360,20 +369,30 @@ const [loading, setLoading] = useState(false);
                     handleTimeChange(time, timeString, "toTime")
                   }
                   placeholder="To"
-                  disabledHours={() => {
-                    const currentHour = new Date().getHours();
-                    return Array.from({ length: currentHour }, (_, i) => i);
-                  }}
-                  disabledMinutes={(selectedHour) => {
-                    const now = new Date();
-                    if (selectedHour === now.getHours()) {
-                      return Array.from(
-                        { length: now.getMinutes() },
-                        (_, i) => i
-                      );
-                    }
-                    return [];
-                  }}
+                disabledHours={() => {
+  const selectedDate = formData.permissionDate?.format("YYYY-MM-DD");
+  const today = new Date().toISOString().split("T")[0];
+
+  if (selectedDate !== today) return [];
+
+  const currentHour = new Date().getHours();
+  return Array.from({ length: currentHour }, (_, i) => i);
+}}
+
+disabledMinutes={(selectedHour) => {
+  const selectedDate = formData.permissionDate?.format("YYYY-MM-DD");
+  const today = new Date().toISOString().split("T")[0];
+
+  if (selectedDate !== today) return [];
+
+  const now = new Date();
+
+  if (selectedHour === now.getHours()) {
+    return Array.from({ length: now.getMinutes() }, (_, i) => i);
+  }
+
+  return [];
+}}
                 />
               </div>
               {errors.permissionDate && (

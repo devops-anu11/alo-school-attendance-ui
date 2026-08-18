@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Academics.module.css";
 import { getPerformance } from "../api/serviceapi";
+import PageHero from "../Layouts/PageHero";
+import { FiAward, FiPercent } from "react-icons/fi";
 
 const examOptions = {
   "Semester 1": [
@@ -78,54 +80,56 @@ const Academics = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Academics</h2>
+      <PageHero
+        title="Academics"
+        subtitle="Your marks and results for the selected term."
+        action={
+          <div className={styles.selectGroup}>
+            <label className={styles.label}>
+              Choose Semester
+              <select
+                value={semester}
+                onChange={(e) => setSemester(e.target.value)}
+              >
+                <option value="sem1">Semester 1</option>
+                <option value="sem2">Semester 2</option>
+              </select>
+            </label>
 
-        <div className={styles.selectGroup}>
-          <label className={styles.label}>
-            Choose Semester
-            <select
-              value={semester}
-              onChange={(e) => setSemester(e.target.value)}
-            >
-              <option value="sem1">Semester 1</option>
-              <option value="sem2">Semester 2</option>
-            </select>
-          </label>
-
-          {/* Exam */}
-          <label className={styles.label}>
-            Choose Exam
-            <select value={exam} onChange={(e) => setExam(e.target.value)}>
-              {/* {examOptions[semester].map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
-                </option>
-              ))} */}
-              <option value="Term1">Term 1</option>
-              <option value="Term2">Term 2</option>
-              <option value="Semester">Semester</option>
-            </select>
-          </label>
-        </div>
-      </div>
-
-      {/* SUMMARY CARDS */}
-      <div className={styles.cards}>
-        {subjects.length > 0 && (
-          <>
-            <div className={styles.card}>
-              <p>Total Marks</p>
-              <p>{subjects[0].total}</p>
-            </div>
-
-            <div className={styles.card}>
-              <p>Average</p>
-              <p>{subjects[0].average}%</p>
-            </div>
-          </>
-        )}
-      </div>
+            {/* Exam */}
+            <label className={styles.label}>
+              Choose Exam
+              <select value={exam} onChange={(e) => setExam(e.target.value)}>
+                <option value="Term1">Term 1</option>
+                <option value="Term2">Term 2</option>
+                <option value="Semester">Semester</option>
+              </select>
+            </label>
+          </div>
+        }
+        stats={
+          subjects.length > 0
+            ? [
+                {
+                  key: "total",
+                  label: "Total Marks",
+                  value: subjects[0].total,
+                  hint: "All subjects",
+                  tone: "brand",
+                  icon: <FiAward />,
+                },
+                {
+                  key: "average",
+                  label: "Average",
+                  value: `${subjects[0].average}%`,
+                  hint: "Across this exam",
+                  tone: "success",
+                  icon: <FiPercent />,
+                },
+              ]
+            : []
+        }
+      />
 
       <div className={styles.tableWrapper}>
         {loading ? (
@@ -134,7 +138,7 @@ const Academics = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Subject Code</th>
+                {/* <th>Subject Code</th> */}
                 <th>Subject Name</th>
                 <th>Mark</th>
                 <th>Status</th>
@@ -145,14 +149,14 @@ const Academics = () => {
             <tbody>
               {subjects.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className={styles.noData}>
+                  <td colSpan="5" className={styles.noData}>
                     No records found
                   </td>
                 </tr>
               ) : (
                 subjects[0].Marks.map((mark, index) => (
                   <tr key={index}>
-                    <td>{mark.subjectCode}</td>
+                    {/* <td>{mark.subjectCode}</td> */}
                     <td>{mark.subjectName}</td>
                     <td>{mark.mark}</td>
                     {/* <td className={mark.mark < 40 ? styles.fail : styles.pass}>

@@ -1,142 +1,113 @@
-/* PoliciesApp.module.css */
+/* ============================================================
+   Policies — content + right-hand section nav
+   ============================================================ */
+
+.page {
+  min-height: 100vh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
+}
 
 .container {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  font-family: poppins,sans-serif;
-  
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: start;
 }
 
-/* Content should have space for the sidebar */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .content {
-  flex: 3;
-  padding: 20px;
-  margin-right: 280px; /* add space for sidebar width */
+  min-width: 0;
+  padding: 30px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
 }
 
-.content h1 {
-  color: #0d2c54;
+/* ---------------- Section nav ---------------- */
+.sideNav {
+  position: sticky;
+  top: calc(var(--header-h) + 28px);
 }
 
-.content h2 {
-  margin-top: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.content p {
-  margin: 10px 0;
-  line-height: 1.6;
-  color: #333;
-}
-
-/* Sidebar fixed to the right */
 .sidebar {
-  position: fixed;
-  top: 130px;       /* adjust depending on your header height */
-  right: 20px;      /* stick to right */
-  width: 250px;     /* fixed width */
-  border-left: 2px solid #ddd;  
-  padding-left: 20px;
-  height: fit-content;
-  transition: border-color 0.3s;
-  background: #fff; /* optional: to prevent text overlap */
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
 }
 
 .sidebar ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar li {
-  margin: 15px 0;
-  position: relative; 
-  padding-left: 10px; 
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .sidebar button {
-  background: none;
+  width: 100%;
+  padding: 12px 14px;
   border: none;
-  font-size: 16px;
-  color: #0d2c54;
-  cursor: pointer;
-  text-align: left;
-  padding: 0;
-  border-radius:8px;
-}
-
-.sidebar li::before {
-  content: "";
-  position: absolute;
-  left: -22px;  
-  top: 0;
-  bottom: 0;
-  width: 3px;
+  border-radius: var(--r-sm);
   background: transparent;
-  transition: background 0.4s ease;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t), color var(--t);
 }
 
-.sidebar li.active::before {
-  background: #0d2c54;
+.sidebar button:hover {
+  background: var(--brand-050);
+  color: var(--brand-700);
 }
 
-.sidebar li.active button {
-  color: #0d2c54;
+.active button {
+  background: var(--brand-gradient);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: var(--sh-1);
 }
-/* ========= Responsive ========= */
 
-/* Tablet and below */
-@media (max-width: 992px) {
+/* ---------------- Responsive ---------------- */
+@media (max-width: 900px) {
   .container {
-    flex-direction: column; /* stack content and sidebar */
+    grid-template-columns: 1fr;
   }
 
-  .content {
-    margin-right: 0;  /* remove space reserved for sidebar */
-    padding: 15px;
-  }
-
-  .sidebar {
-    position: relative; /* no fixed position */
-    top: auto;
-    right: auto;
-    width: 100%;       /* take full width */
-    border-left: none; /* remove left border */
-    border-top: 2px solid #ddd; /* optional: add top border */
-    padding: 15px 0;
-    margin-top: 20px;
+  /* Nav first on small screens so the reader can pick a section. */
+  .sideNav {
+    position: static;
+    order: -1;
   }
 
   .sidebar ul {
-    display: flex;          /* horizontal nav for better UX */
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .sidebar li {
-    margin: 10px 0;
-    padding-left: 0;
-  }
-
-  .sidebar li::before {
-    display: none; /* hide vertical indicator */
-  }
-}
-
-/* Mobile (small screens) */
-@media (max-width: 576px) {
-  .content {
-    padding: 10px;
-  }
-
-  .sidebar ul {
-    flex-direction: column; /* stack again on very small screens */
-    align-items: flex-start;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 2px;
   }
 
   .sidebar button {
-    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .content {
+    padding: 22px 18px;
   }
 }

@@ -1,166 +1,222 @@
+/* ============================================================
+   Academics
+   ============================================================ */
+
 .container {
-  padding-top: 100px;
-  background: #f8f9fc;
   min-height: 100vh;
-  
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
+/* ---------------- Term selectors (inside the hero) ---------------- */
 .selectGroup {
   display: flex;
-  gap: 20px;          /* space between Semester & Exam */
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .label {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 600;
+  color: var(--text-3);
 }
 
-
-.header h2 {
-  font-size: 22px;
-  font-weight: 600;
-  margin-left: 15px;
-}
-
-.header select {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  outline: none;
-  margin-right: 15px;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 25px;
-}
-
-.card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  margin: 10px;
-}
-
-.card p {
+.label select {
+  min-width: 165px;
+  padding: 11px 34px 11px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background-color: var(--surface);
+  font-family: inherit;
   font-size: 14px;
-  color: #777;
-  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238592a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  background-size: 16px;
+  transition: border-color var(--t), box-shadow var(--t);
 }
 
-.card h3 {
-  font-size: 24px;
-  font-weight: 600;
+.label select:hover {
+  border-color: var(--brand-400);
 }
 
-.pass {
-  color: #2e7d32;
+.label select:focus {
+  outline: none;
+  border-color: var(--brand-500);
+  box-shadow: var(--ring);
 }
 
-.fail {
-  color: #d32f2f;
-}
-
+/* ---------------- Table ---------------- */
 .tableWrapper {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  padding: 12px 12px 18px;
   overflow-x: auto;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  margin:10px;
 }
-/* .label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 600;
-  gap: 4px;
-} */
 
 .table {
   width: 100%;
+  min-width: 680px;
   border-collapse: collapse;
 }
 
+/* Gradient on the row, not per cell — otherwise it restarts in every
+   <th> and the header shows vertical banding. */
+.table thead tr {
+  background: linear-gradient(90deg, var(--brand-700) 0%, var(--brand-600) 100%);
+}
+
 .table th {
-  background: #f2f4f8;
-  font-size: 14px;
-  padding: 12px;
-  text-align: center;
+  padding: 14px;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th:first-child {
+  border-radius: var(--r-md) 0 0 var(--r-md);
+  padding-left: 18px;
+}
+
+.table th:last-child {
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding-right: 18px;
+  text-align: right;
 }
 
 .table td {
-  padding: 12px;
-  font-size: 14px;
-  border-bottom: 1px solid #eee;
+  padding: 15px 14px;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
 }
 
-.table tr:hover {
-  background: #f9fafc;
-}
-.topperSection {
-  margin-top: 24px;
-}
-
-.topperList {
-  display: flex;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.topperCard {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  width: 180px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.rank {
-  font-size: 18px;
-  font-weight: bold;
-  color: #ff9800;
-}
-
-.name {
+.table td:first-child {
+  padding-left: 18px;
   font-weight: 600;
-  margin: 8px 0;
+  color: var(--text);
 }
 
-.percent {
-  color: #2e7d32;
-  font-weight: bold;
+.table td:last-child {
+  padding-right: 18px;
+  text-align: right;
 }
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:first-child td {
+  padding-top: 18px;
+}
+
+.table tbody tr {
+  transition: background var(--t);
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--surface-2);
+}
+
+.table tbody tr:hover {
+  background: var(--brand-050);
+}
+
+/* ---------------- Result states ---------------- */
+.pass,
+.fail,
 .absent {
-  color: orange;
-  font-weight: bold;
+  font-weight: 700;
 }
-.fail {
-  color: red;
-}
+
 .pass {
-  color: green;
+  color: var(--success);
 }
+
+.fail {
+  color: var(--danger);
+}
+
+.absent {
+  color: var(--text-3);
+}
+
 .downloadBtn {
-  background-color: #16a34a;
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  font-size: 14px;
-  border-radius: 6px;
+  padding: 7px 16px;
+  border: 1px solid var(--brand-200);
+  border-radius: var(--r-pill);
+  background: var(--brand-050);
+  color: var(--brand-700);
+  font-size: 12.5px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all var(--t);
 }
 
 .downloadBtn:hover {
-  background-color: #15803d;
+  background: var(--brand-gradient);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Beats the `td:last-child { text-align: right }` rule above — an
+   empty-state cell spans the whole row, so it must stay centred. */
+.table td.noData {
+  padding: 48px 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.loading {
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-3);
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+  .selectGroup {
+    width: 100%;
+  }
+
+  .label {
+    flex: 1 1 150px;
+  }
+
+  .label select {
+    min-width: 0;
+    width: 100%;
+  }
 }

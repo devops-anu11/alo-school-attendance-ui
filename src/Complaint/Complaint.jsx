@@ -3,6 +3,8 @@ import styles from "./Complaint.module.css";
 import ComplaintModal from "./ComplaintModal";
 import { getComplaint } from "../api/serviceapi";
 import Loader from "../loader/Loader";
+import PageHero from "../Layouts/PageHero";
+import { FiMessageSquare, FiClock, FiCheckCircle } from "react-icons/fi";
 
 const Complaint = () => {
   const [complaints, setComplaints] = useState([]);
@@ -34,13 +36,41 @@ const Complaint = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.topBar}>
-        <h2 className={styles.heading}>Complaint</h2>
-
-        <button className={styles.newBtn} onClick={() => setOpenModal(true)}>
-          + New Complaint
-        </button>
-      </div>
+      <PageHero
+        title="Complaint"
+        subtitle="Raise an issue with the school and follow its progress."
+        action={
+          <button className={styles.newBtn} onClick={() => setOpenModal(true)}>
+            + New Complaint
+          </button>
+        }
+        stats={[
+          {
+            key: "total",
+            label: "Total Raised",
+            value: complaints.length,
+            hint: "All time",
+            tone: "brand",
+            icon: <FiMessageSquare />,
+          },
+          {
+            key: "pending",
+            label: "Pending",
+            value: complaints.filter((c) => c.status === "pending").length,
+            hint: "Awaiting review",
+            tone: "warn",
+            icon: <FiClock />,
+          },
+          {
+            key: "accepted",
+            label: "Accepted",
+            value: complaints.filter((c) => c.status === "accepted").length,
+            hint: "Actioned",
+            tone: "success",
+            icon: <FiCheckCircle />,
+          },
+        ]}
+      />
 
       {loading ? (
         <Loader />
@@ -59,15 +89,17 @@ const Complaint = () => {
             {complaints.length > 0 ? (
               complaints.map((item) => (
                 <tr key={item._id}>
-                  <td>
+                  <td data-label="Date">
                     {new Date(item.createdAt).toLocaleDateString("en-GB")}
                   </td>
 
-                  <td>{item.summary}</td>
+                  <td data-label="Subject">{item.summary}</td>
 
-                  <td className={styles.message}>{item.message}</td>
+                  <td data-label="Description" className={styles.message}>
+                    {item.message}
+                  </td>
 
-                  <td>
+                  <td data-label="Status">
                     <span
                       className={`${styles.status} ${
                         item.status === "pending"

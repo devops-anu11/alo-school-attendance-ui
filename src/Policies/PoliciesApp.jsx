@@ -6,6 +6,7 @@ import Privacy from "./Pages/Privacy";
 import Leave from "./Pages/Leave";
 import Fee from "./Pages/Fee";
 import Loader from "../loader/Loader";
+import PageHero from "../Layouts/PageHero";
 
 function PoliciesApp() {
   const [activePage, setActivePage] = useState("privacy"); // default: Privacy
@@ -23,8 +24,14 @@ function PoliciesApp() {
   }, [activePage]); // run when activePage changes
 
   return (
-    <div className={styles.container}>
+    <div className={styles.page}>
       {loading && <Loader />} {/* show loader only while loading */}
+      <PageHero
+        title="Policies"
+        subtitle="Everything you agreed to — privacy, terms, leave and fees."
+      />
+
+      <div className={styles.container}>
       <div className={styles.content}>
         {activePage === "terms" && <Terms />}
         {activePage === "privacy" && <Privacy />}
@@ -58,6 +65,7 @@ function PoliciesApp() {
             </li>
           </ul>
         </div>
+      </div>
       </div>
     </div>
   );

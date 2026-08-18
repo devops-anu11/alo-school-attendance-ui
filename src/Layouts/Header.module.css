@@ -1,1132 +1,547 @@
+/* ============================================================
+   Header / top navigation
+   ============================================================ */
+
 .headerContainer {
-  display: flex;
-  align-items: center;              /* ✅ vertical align everything */
-  justify-content: space-between;
-  align-content: center;   /* space between left + right */
-  padding: 0 20px;
-  background: linear-gradient(to bottom, #144196, #061530);
-  /* color: white; */
-  flex-wrap: wrap;
-  font-family: 'Poppins', sans-serif;
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: var(--header-h);
   z-index: 1000;
-  height:80px;
-  align-content: center;
-}
-.rightSectionMobile{
-  display:none;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 var(--gutter);
+
+  background: var(--brand-gradient);
+  box-shadow: 0 2px 18px rgba(6, 21, 48, 0.28);
 }
 
-/* ----------------- Left Section ----------------- */
+/* ----------------- Logo ----------------- */
 .logoWrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 150px;
-  /* height: 110px; */
-}
-
-/* Logo image */
-.logo {
-  width: 100%;
+  flex: 0 0 auto;
   height: 100%;
-  object-fit: contain;
-  margin-right: 20px;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: transform var(--t);
 }
 
+.logoWrapper:hover {
+  transform: scale(1.03);
+}
 
+.logo {
+  height: 100%;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+/* ----------------- Desktop nav ----------------- */
 .nav {
   display: flex;
-  align-items: center; /* ✅ center vertically */
-  gap: 40px;
-  margin-left: 20px;
-}
-.links {
-  display: flex;
-  gap: 24px;
+  align-items: center;
+  gap: 4px;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
 }
 
-/* Buttons */
 .linkBtn {
-  background: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+
+  background: transparent;
   border: none;
   cursor: pointer;
-  color: #FFFFFF;
-  font-size: 16px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
   font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.linkBtn:hover {
-  background-color: white;
-  color: black;
-}
-.activeLink {
-  background-color: white !important;
-  color: black !important;
-  font-weight: 600;
-  border-radius: 5px;
-  padding: 5px 10px;
+  padding: 9px 14px;
+  border-radius: var(--r-pill);
+  transition: background var(--t), color var(--t), transform var(--t);
 }
 
-/* 
-/* Right section always visible */
+.linkIcon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.linkBtn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.activeLink {
+  background: #fff;
+  color: var(--brand-700);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.activeLink:hover {
+  background: #fff;
+  color: var(--brand-700);
+}
+
+/* ----------------- Right actions ----------------- */
 .rightSection {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-right:20px;
+  gap: 12px;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
-/* Hamburger menu hidden on desktop */
-.hamburger {
-  display: none;
-}
-.logoutWrapper {
-  padding: 1px 10px;
-}
-
-.logoutIcon {
-  color: red;
-  font-size: 20px;
+.iconBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 18px;
   cursor: pointer;
+  transition: background var(--t), transform var(--t);
 }
 
-.notificationIcon {
-  font-size: 20px;
-  cursor: pointer;
-  color: white;
+.iconBtn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
 }
 
+.logoutBtn:hover {
+  background: var(--danger);
+}
+
+.badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-pill);
+  background: #ff4d4f;
+  border: 2px solid var(--brand-700);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+}
+
+/* ----------------- Profile ----------------- */
 .profile {
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 50px;
+  padding: 5px 14px 5px 5px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
 }
+
 .profilePic {
-  width: 45px;
-  height: 45px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
+
+.profileFallback {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .profileInfo h4 {
   margin: 0;
-  font-size: 14px;
-  font-weight: bold;
-  color:white;
-}
-.profileInfo p {
-  margin: 0;
-  font-size: 12px;
-  color: #d1d1d1;
-}
-.dayMonth {
-  display: block;
-  font-size: 12px;
-  color: #666;
-  margin-top: 4px;
-}
-.notificationItem {
-  padding: 10px 15px;
-  border-bottom: 1px solid #eee;
-}
-
-.textBlock {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Vertically center items */
-  width: 100%;
-}
-
-.messageWrapper {
-  display: flex;
-  flex-direction: column; /* Stack message and subMessage vertically */
-}
-
-.message {
-  font-weight: 500;
-  color: #333;
-}
-
-.subMessage {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 2px;
-}
-
-.dateBlock {
-  text-align: right;
-  font-size: 0.8rem;
-  color: #999;
-}
-
-.inlineDate {
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.25;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.profileInfo p {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.3;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ----------------- Notification dropdown ----------------- */
 .notificationWrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.notificationIcon {
-  font-size: 20px;
-  cursor: pointer;
-  position: relative;
-}
-
-.redDot {
+.dropdown {
   position: absolute;
-  top: 0;
+  top: calc(100% + 14px);
   right: 0;
-  width: 8px;
-  height: 8px;
-  background-color: red;
-  border-radius: 50%;
-  border: 1px solid #fff;
+  width: 380px;
+  max-width: calc(100vw - 24px);
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-3);
+  overflow: hidden;
+  z-index: 1200;
+  animation: dropIn 0.18s ease-out both;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .dropdownHeaderWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #eee;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
 }
 
 .dropdownHeader {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
- 
-
-  
-}
-
-.closeBtn {
-  background: none;
-  border: none;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #555;
-  transition: color 0.2s;
-}
-
-.closeBtn:hover {
-  color: #d32f2f;
-}
-
-/* Notification item */
-.notificationItem {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.notificationItem:last-child {
-  border-bottom: none;
-}
-
-
-/* Text block: flex layout for content + date */
-.textBlock {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.textBlock h4 {
+  color: var(--text);
   margin: 0;
-  font-size: 14px;
-  font-weight: 500;
 }
 
-.textBlock p {
-  margin: 2px 0 0 0;
-  font-size: 12px;
-  color: #666;
-}
-
-/* Date block */
-.dateBlock {
-  text-align: right;
-  font-size: 0.8rem;
-  color: #999;
-}
-
-.day {
-  display: block;
-  font-weight: 600;
-}
-
-.monthYear {
-  display: block;
-  font-size: 11px;
-  color: #aaa;
-}
-
-/* No notifications */
-.noNotifications {
-  text-align: center;
-  padding: 15px 0;
-  font-size: 14px;
-  color: #777;
-}
-
-
-/* 📱 Responsive */
-/* 📱 Tablet (≤ 1024px) */
-@media (max-width: 1024px) {
-  .nav {
-    gap: 40px;
-  }
-
-  .linkBtn {
-    font-size: 14px;
-  }
-
-  .profileInfo h4 {
-    font-size: 13px;
-  }
-
-  .profileInfo p {
-    font-size: 11px;
-  }
-
-  .dropdown {
-    width: 320px;
-  }
-}
-
-/* Mobile ≤ 768px */
-@media (max-width: 768px) {
-  .headerContainer {
-    flex-direction: row; /* logo left + right section in same line */
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    height: 60px;
-  }
-
-  .logoWrapper {
-    width: 120px;
-    height: auto;
-  }
-
-  .rightMobileWrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-.hideOnMobile {
-    display: none;
-  }
-
-  .rightSection {
-    width: auto;
-    justify-content: flex-end;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .notificationIcon,
-  .logoutIcon {
-    font-size: 20px;
-  }
-  .hamburger {
-    display: flex;
-  }
-
-  .nav {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .nav.mobileOpen {
-    display: flex;
-  }
-
-  .links {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .linkBtn {
-    width: 100%;
-    text-align: left;
-    padding: 8px 12px;
-  }
-}
-
-/* 📱 Small Mobile (≤ 480px) */
-@media (max-width: 480px) {
-  .headerContainer {
-    padding: 10px;
-  }
- 
-
-  .logoWrapper {
-    width: 150px;
-    height: auto;
-  }
-
-  .nav {
-    gap: 10px;
-    width: 100%;
-  }
-
-  .linkBtn {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .rightSection {
-    width: 100%;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .logoutIcon,
-  .notificationIcon {
-    font-size: 18px;
-  }
-
-  .profilePic {
-    width: 36px;
-    height: 36px;
-  }
-
-  .profileInfo h4 {
-    font-size: 12px;
-  }
-
-  .profileInfo p {
-    font-size: 10px;
-  }
-
-  /* .dropdown {
-    width: 90vw;
-    right: 5%;
-  } */
-
-  .textBlock {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .dateBlock {
-    text-align: left;
-    margin-top: 5px;
-  }
-
-  .dropdownHeader {
-    font-size: 16px;
-  }
-
-  .notificationItem h4 {
-    font-size: 11px;
-    width: 150px;
-  }
-}
-
-/* 🔔 Notification Dropdown */
-.notificationWrapper {
-  display: flex;
+.closeBtn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-.logoutIcon {
-  color: red;
-  font-size: 20px;
-  cursor: pointer;
-}
-.notificationIcon {
-  font-size: 20px;
-  cursor: pointer;
-  color: white;
-}
-
-/* ----------------- Notification Dropdown ----------------- */
-.notificationWrapper {
-  position: relative;
-}
-/* === FINAL NOTIFICATION DROPDOWN FIX (WORKS 100%) === */
-
-.dropdown {
-  position: absolute;
-  top: 120%;                     /* fix vertical position */
-  right: -10px;
-  background: #fff;
-  border-radius: 8px;
-  width: 400px;
-  padding: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 1000;
-
-  /* 🔥 Make scroll work */
-  max-height: 300px !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-}
-
-/* Scrollbar styling (Chrome/Edge) */
-.dropdown::-webkit-scrollbar {
-  width: 6px;
-}
-
-.dropdown::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-.dropdown::-webkit-scrollbar-thumb:hover {
-  background: #a0a0a0;
-}
-
-/* Firefox thin scrollbar */
-.dropdown {
-  scrollbar-width: thin;
-}
-
-
-.dropdownHeader {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  /* border-bottom: 1px solid #eee; */
-  padding-bottom: 6px;
-  display:flex;
-  align-items:center;
-}
-.closeBtn {
+  width: 28px;
+  height: 28px;
   background: none;
   border: none;
-  font-size: 25px;
-  display:flex;
-  align-items:center;
-  font-weight: bold;
+  border-radius: var(--r-sm);
+  font-size: 18px;
   cursor: pointer;
-  color: rgb(14, 14, 94);
-  transition: color 0.2s;
-  margin-bottom:7px;
-}
-.dropdownHeaderWrapper{
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
-
+  color: var(--text-3);
+  transition: background var(--t), color var(--t);
 }
 
 .closeBtn:hover {
-  color: #d32f2f; /* red on hover */
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
+.dropdownBody {
+  max-height: 340px;
+  overflow-y: auto;
+}
 
-/* Notification row */
 .notificationItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px;
-  gap: 4px;
-  border-bottom: 1px solid #f8f1f1;
-}
-
-.notificationItem h4 {
-  font-size: 12px;
-  width: 200px;
-  color: #332F2F;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--t);
 }
 
 .notificationItem:last-child {
   border-bottom: none;
 }
 
-/* Left circle (BD or SL) */
-.circleBlue,
-.circleOrange {
-  border-radius: 50%;
-  height: 36px;
-  width: 36px;
-  border: none;
-  font-weight: 600;
-  font-size: 13px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.notificationItem:hover {
+  background: var(--surface-2);
 }
 
-.circleBlue {
-  background-color: #66b3ff;
+.unread {
+  background: var(--brand-050);
 }
 
-.circleOrange {
-  background-color: #f5b85e;
-}
-
-/* Middle text */
 .textBlock {
   flex: 1;
-  margin-left: 10px;
-  text-align: left;
+  min-width: 0;
 }
 
 .textBlock h4 {
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0 0 2px 0;
-  color: #000;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
 }
 
 .textBlock p {
+  margin: 2px 0 0;
   font-size: 12px;
-  color: #999;
-  margin: 0;
+  color: var(--text-3);
 }
 
-/* Right date block */
-/* Right date block for dropdown notifications */
 .dateBlock {
-  text-align: center;
-  min-width: 50px;
-  line-height: 1.2;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  padding: 6px 4px;
+  background: var(--brand-100);
+  border-radius: var(--r-sm);
+  line-height: 1.1;
 }
 
 .day {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  display: block;
-  color: #0b2d73;
+  color: var(--brand-700);
 }
 
 .monthYear {
   font-size: 10px;
-  color: #999;
+  font-weight: 600;
   text-transform: uppercase;
+  color: var(--brand-600);
 }
-
-/* ================= Header Responsive ================= */
-/* Tablet (≤1024px) */
-@media (max-width: 1024px) {
-  .nav {
-    gap: 40px;
-  }
-
-  .linkBtn {
-    font-size: 14px;
-  }
-
-  .profileInfo h4 {
-    font-size: 13px;
-  }
-
-  .profileInfo p {
-    font-size: 11px;
-  }
-
-  .dropdown {
-    width: 320px;
-  }
-}
-
-/* Mobile (≤768px) */
-@media (max-width: 768px) {
-  .headerContainer {
-    flex-direction: column;
-    align-items: flex-start;
-    height: auto;
-    padding: 12px 16px;
-  }
-
-  .logoWrapper {
-    width: 180px;
-    height: auto;
-    /* margin-bottom: 10px; */
-  }
-
-  .logo {
-    width: 100%;
-    height: auto;
-  }
-
-  .nav {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    gap: 12px;
-    margin: 10px 0;
-  }
-
-  .links {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-
-  .linkBtn {
-    width: 100%;
-    text-align: left;
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-
-  .rightSection {
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 8px;
-    gap: 12px;
-  }
-
-  .profilePic {
-    width: 40px;
-    height: 40px;
-  }
-
-  .dropdown {
-    top: 50px; /* slightly lower for mobile */
-    right: 10px; /* keep some distance from screen edge */
-    width: 280px;
-  }
-}
-
-/* Small Mobile (≤480px) */
-@media (max-width: 480px) {
-  .headerContainer {
-    padding: 10px;
-  }
-
-  .logoWrapper {
-    width: 150px;
-    height: auto;
-  }
-
-  .nav {
-    gap: 10px;
-    width: 100%;
-  }
-
-
-  .linkBtn {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .rightSection {
-    width: 100%;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .logoutIcon,
-  .notificationIcon {
-    font-size: 18px;
-  }
-
-  .profilePic {
-    width: 36px;
-    height: 36px;
-  }
-
-  .profileInfo h4 {
-    font-size: 12px;
-  }
-
-  .profileInfo p {
-    font-size: 10px;
-  }
-
-  .dropdown {
-    width: 95%;
-    right: 2%;
-    top: 95%;
-    max-width: 300px;
-   
-   
-  }
-
-  .dropdownHeader {
-    font-size: 16px;
-  }
-
-  .notificationItem h4 {
-    font-size: 11px;
-    width: 150px;
-  }
-}
-.redDot {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
 
 .noNotifications {
   text-align: center;
-  padding: 1rem;
-  color: gray;
-  font-style: italic;
+  padding: 34px 16px;
+  color: var(--text-3);
+  font-size: 14px;
 }
-/* Hamburger Button */
+
+/* ----------------- Hamburger ----------------- */
 .hamburger {
   display: none;
   flex-direction: column;
-  gap: 4px;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0 8px;
   border: none;
-  background: none;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
-  z-index: 1001;
 }
 
 .bar {
-  width: 25px;
-  height: 3px;
-  background-color: white;
-  transition: 0.3s;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+  transition: transform var(--t), opacity var(--t);
 }
 
 .bar.open:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+  transform: translateY(7px) rotate(45deg);
 }
 .bar.open:nth-child(2) {
   opacity: 0;
 }
 .bar.open:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+  transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Mobile nav toggling */
-
-@media (max-width: 768px) {
-  .headerContainer {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: auto;
-    padding: 12px 16px;
-  }
-
-  .logoWrapper {
-    width: 150px;
-    height: auto;
-  }
-
-  .rightSectionMobile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    z-index: 1001;
-  }
-
-  .bar {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    transition: 0.3s;
-  }
-
-  .bar.open:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  .bar.open:nth-child(2) {
-    opacity: 0;
-  }
-  .bar.open:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-  }
-
-  .nav {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .nav.mobileOpen {
-    display: flex;
-  }
-
-  .links {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-
-  .linkBtn {
-    width: 100%;
-    text-align: left;
-    padding: 8px 12px;
-  }
-
-
-  .logoWrapper {
-    width: 200px; /* keep big but not too big */
-    height: 60px;
-  }
-   .notificationWrapper {
-    display: flex;
-    position: relative;
-  }
-
-  
-
-  }
-
-
- @media (max-width: 480px) {
-  .dropdown {
-    width: calc(100vw - 16px); /* almost full width */
-    right: 8px;                 /* small right padding */
-    top: 30%;                  /* below bell */
-    max-height: 250px;          /* scrollable */
-  }
- 
+/* ----------------- Mobile drawer ----------------- */
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 21, 48, 0.5);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-slow);
+  z-index: 1100;
 }
 
-
-
-.notificationItem {
-   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.scrimOpen {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* unread = highlight */
-.unread {
-  background-color: #f0f8ff; /* light blue */
-}
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: 300px;
+  max-width: 86vw;
+  z-index: 1101;
 
-/* read = normal */
-.read {
-  background-color: #fff;
-}
-
-.notificationItem:hover {
-  background-color: #f9f9f9;
-}
-
-.dateBlock {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  padding: 18px 16px 24px;
+
+  background: var(--brand-gradient);
+  box-shadow: var(--sh-3);
+  transform: translateX(105%);
+  transition: transform var(--t-slow);
+  overflow-y: auto;
+}
+
+.drawerOpen {
+  transform: none;
+}
+
+.drawerProfile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  margin-bottom: 10px;
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 14px;
+  border: none;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t), color var(--t);
+}
+
+.drawerLink:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.drawerLinkActive {
+  background: #fff;
+  color: var(--brand-700);
+  font-weight: 600;
+}
+
+.drawerIcon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.drawerLogout {
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 50px;
-  text-align: center;
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 4px;
+  gap: 10px;
+  margin-top: auto;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: #ff8f8a;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t), color var(--t);
 }
 
-.day {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
+.drawerLogout:hover {
+  background: var(--danger);
+  color: #fff;
+  border-color: transparent;
 }
 
-.monthYear {
-  font-size: 12px;
-  color: #777;
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* Nav labels get tight before the bar wraps — drop to icons only. */
+@media (max-width: 1400px) {
+  .linkBtn {
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+  .profileInfo h4,
+  .profileInfo p {
+    max-width: 110px;
+  }
 }
+
+/* Seven menu items no longer fit comfortably — switch to the drawer. */
+@media (max-width: 1180px) {
+  .nav {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+}
+
 @media (max-width: 860px) {
-
-  .headerContainer{
-    display:flex;
-    justify-content: space-between;
+  .profile {
+    padding: 4px;
   }
-  
-  
-}
-/* ================= iPad Portrait (768px–820px) ================= */
-/* ================= iPad Portrait (768px–820px inclusive) ================= */
-/* ================= iPad Portrait (768px–820px) ================= */
-/* ================= iPad Portrait (768px–820px) ================= */
-@media (min-width: 768px) and (max-width: 820px) {
-  .headerContainer {
-    height: 70px;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logoWrapper {
-    width: 160px;
-  }
-
-  /* NAV hidden by default; opens when .mobileOpen is applied */
-  .nav {
+  .profileInfo {
     display: none;
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: #061530;
-    padding: 14px 18px;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 10005;
-  }
-  .nav.mobileOpen {
-    display: flex;
-  }
-
-  .linkBtn {
-    font-size: 15px;
-    padding: 8px 12px;
-    text-align: center;
-    width: 100%;
-    color: white;
-  }
-
-  /* show the mobile-right section (hamburger + bell + logout) */
-  .rightSectionMobile {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  /* hide desktop right-section (profile) */
-  .hideOnMobile {
-    display: none !important;
-  }
-
-  /* Hamburger styles */
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    padding: 6px;
-    z-index: 10007;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .bar {
-    width: 24px;
-    height: 3px;
-    background-color: white;
-    border-radius: 2px;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .bar.open:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
-  .bar.open:nth-child(2) { opacity: 0; }
-  .bar.open:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
-
-  .dropdown {
-    width: 340px;
-    top: 70px;
-    right: 15px;
   }
 }
 
-/* ================= iPad Landscape (821px–1024px) ================= */
-@media (min-width: 821px) and (max-width: 1024px) {
+@media (max-width: 560px) {
   .headerContainer {
-    height: 75px;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    gap: 10px;
   }
-
-  .logoWrapper {
-    width: 180px;
+  .rightSection {
+    gap: 8px;
   }
-
-  /* NAV hidden by default; opens when .mobileOpen is applied */
-  .nav {
+  .profile {
     display: none;
-    position: absolute;
-    top: 75px;
-    left: 0;
-    width: 100%;
-    background: #061530;
-    padding: 16px 20px;
-    flex-direction: column;
-    gap: 14px;
-    z-index: 10005;
   }
-  .nav.mobileOpen {
-    display: flex;
-  }
-
-  .linkBtn {
-    font-size: 16px;
-    padding: 8px 12px;
-    text-align: center;
-    width: 100%;
-    color: white;
-  }
-
-  /* show the mobile-right section (hamburger + bell + logout) */
-  .rightSectionMobile {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  /* hide desktop right-section (profile) */
-  .hideOnMobile {
-    display: none !important;
-  }
-
-  /* Hamburger styles (same as portrait) */
+  .iconBtn,
   .hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    padding: 6px;
-    z-index: 10007;
-    -webkit-tap-highlight-color: transparent;
+    width: 38px;
+    height: 38px;
   }
-  .bar {
-    width: 26px;
-    height: 3px;
-    background-color: white;
-    border-radius: 2px;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .bar.open:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-  .bar.open:nth-child(2) { opacity: 0; }
-  .bar.open:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
-  .profilePic {
-    display: none;
-  }
-
   .dropdown {
-    width: 400px;
-    top: 75px;
-    right: 20px;
-   
+    position: fixed;
+    top: calc(var(--header-h) + 8px);
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
   }
 }

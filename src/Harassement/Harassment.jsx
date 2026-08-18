@@ -3,6 +3,7 @@ import styles from "./Harassment.module.css";
 import { createHarassment } from "../api/serviceapi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PageHero from "../Layouts/PageHero";
 
 const Harassment = () => {
   const [formData, setFormData] = useState({
@@ -91,9 +92,14 @@ const Harassment = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <h2 className={styles.heading}>Harassment Report</h2>
+      <PageHero
+        eyebrow="Confidential"
+        eyebrowTone="warn"
+        title="Harassment Report"
+        subtitle="Report an incident safely. Only the authorised committee can see it."
+      />
 
+      <div className={styles.card}>
         <div className={styles.notice}>
           <strong>Confidential:</strong> Your report will be kept confidential
           and reviewed only by the authorized committee.

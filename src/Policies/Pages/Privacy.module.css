@@ -1,24 +1,39 @@
+/* Policy document — rendered inside PoliciesApp `.content` */
+
 .container {
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-  color: #333;
-  line-height: 1.6;
+  color: var(--text-2);
+  line-height: 1.75;
+  font-size: 14.5px;
+  max-width: 78ch;
 }
 
 .heading {
-  color: #004d99;
-  margin-top:60px; /* Primary heading color */
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--brand-700);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
 }
 
 .subHeading {
-  color: #504f4f;
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-  font-weight: 400;
-  font-size: 20px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 26px;
+  margin-bottom: 8px;
 }
 
-
 .paragraph {
-  margin-bottom: 1rem;
+  margin-bottom: 14px;
+}
+
+.container ul,
+.container ol {
+  margin: 0 0 14px 22px;
+}
+
+.container li {
+  margin-bottom: 6px;
 }

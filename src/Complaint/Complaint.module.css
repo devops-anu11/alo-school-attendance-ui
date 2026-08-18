@@ -1,185 +1,194 @@
+/* ============================================================
+   Complaint
+   ============================================================ */
+
 .container {
-  padding: 120px 20px 20px;
-  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
 }
 
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.heading {
-  font-size: 30px;
-  font-weight: 600;
-  color: #144196;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .newBtn {
-  background: linear-gradient(to bottom, #144196, #061530);
-  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
   border: none;
-  padding: 12px 22px;
-  border-radius: 6px;
+  border-radius: var(--r-pill);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  transition: 0.3s;
+  box-shadow: var(--sh-2);
+  transition: transform var(--t), box-shadow var(--t), filter var(--t);
 }
 
 .newBtn:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: var(--sh-3);
+  filter: brightness(1.08);
 }
 
-/* ================= TABLE ================= */
-
+/* ---------------- Table ---------------- */
 .table {
   width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
   overflow: hidden;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
 }
 
-.table thead {
-  background: linear-gradient(to bottom, #144196, #061530);
+/* Gradient on the row, not per cell — otherwise it restarts in every
+   <th> and the header shows vertical banding. */
+.table thead tr {
+  background: linear-gradient(90deg, var(--brand-700) 0%, var(--brand-600) 100%);
 }
 
 .table th {
-  color: white;
-  padding: 16px;
-  font-size: 15px;
+  padding: 14px 18px;
+  color: #fff;
+  font-size: 11.5px;
   font-weight: 600;
-  text-align: center;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .table td {
-  padding: 16px;
-  text-align: center;
-  border-bottom: 1px solid #ececec;
-  font-size: 14px;
+  padding: 15px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--t);
 }
 
 .table tbody tr:hover {
-  background: #f8f9fc;
+  background: var(--brand-050);
 }
-
-/* Column widths */
-
-.table th:nth-child(1),
-.table td:nth-child(1) {
-  width: 140px;
-}
-
-.table th:nth-child(2),
-.table td:nth-child(2) {
-  width: 220px;
-}
-
-.table th:nth-child(3),
-.table td:nth-child(3) {
-  width: 450px;
-}
-
-.table th:nth-child(4),
-.table td:nth-child(4) {
-  width: 140px;
-}
-
-/* Description */
 
 .message {
-  text-align: left;
   max-width: 420px;
-  margin: auto;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-
-  line-height: 1.5;
+  color: var(--text-2);
+  line-height: 1.6;
 }
 
-/* Status */
-
+/* ---------------- Status chips ---------------- */
 .status {
-  padding: 6px 14px;
-  border-radius: 20px;
-  color: white;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
   font-weight: 600;
   text-transform: capitalize;
 }
 
 .pending {
-  background: #f39c12;
+  background: var(--warn-bg);
+  color: var(--warn);
 }
 
 .accepted {
-  background: #2d9c4b;
+  background: var(--success-bg);
+  color: var(--success);
 }
 
 .rejected {
-  background: #e74c3c;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
-/* No Data */
-
-.noData {
-  padding: 35px;
-  color: #777;
-  font-size: 15px;
+/* Needs to out-specify `.table td { text-align: left }` above. */
+.table td.noData {
+  padding: 48px 16px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--text-3);
+  font-size: 14px;
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 992px) {
-  .container {
-    overflow-x: auto;
-  }
-
-  .table {
-    min-width: 900px;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 100px 15px 15px;
-  }
-
-  .topBar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .heading {
-    font-size: 24px;
-  }
-
+/* ---------------- Responsive ---------------- */
+@media (max-width: 860px) {
   .newBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Card layout — a 4-column table is unreadable on a phone. */
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
     width: 100%;
   }
 
+  .table thead {
+    display: none;
+  }
+
   .table {
-    min-width: 900px;
-  }
-}
-
-@media (max-width: 480px) {
-  .heading {
-    font-size: 22px;
+    border: none;
+    background: transparent;
+    box-shadow: none;
   }
 
-  .newBtn {
-    font-size: 14px;
-    padding: 10px;
+  .table tr {
+    margin-bottom: 12px;
+    padding: 8px 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-1);
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-3);
+    text-align: left;
+  }
+
+  .message {
+    max-width: none;
   }
 }

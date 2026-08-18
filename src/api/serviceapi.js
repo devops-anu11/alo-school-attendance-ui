@@ -131,3 +131,43 @@ export const createHarassment = (harassmentData) => {
 };
 
 
+/* ---------------- Daily Task Update Management ----------------
+   These follow the same conventions as the modules above. The
+   endpoints are not live yet, so DailyTask/dailyTaskStore.js keeps
+   USE_API = false and persists locally. Flip that flag once the
+   server exposes /dailytask.                                     */
+
+/* Dropdown sources. The axios interceptor already attaches the
+   `authorization` and `userid` headers these endpoints require. */
+export const getDailyTaskHours = () => {
+  return apiService.get(`/daily-task-hour`);
+};
+
+export const getDailyTaskSubjects = () => {
+  return apiService.get(`/daily-task-subject`);
+};
+
+export const getDailyTaskTrainers = () => {
+  return apiService.get(`/daily-task-trainer`);
+};
+
+export const getDailyTasks = (userId, date, status) => {
+  const params = new URLSearchParams({ userId });
+  if (date) params.append("date", date);
+  if (status) params.append("status", status);
+  return apiService.get(`/daily-task?${params.toString()}`);
+};
+
+export const createDailyTask = (taskData) => {
+  return apiService.post(`/daily-task/create`, taskData);
+};
+
+export const updateDailyTask = (taskId, taskData) => {
+  return apiService.put(`/daily-task/${taskId}`, taskData);
+};
+
+export const deleteDailyTask = (taskId) => {
+  return apiService.delete(`/daily-task/${taskId}`);
+};
+
+

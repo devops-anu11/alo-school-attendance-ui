@@ -13,6 +13,9 @@ import EventCard from "../EventCard/EventCard";
 import Loader from "../loader/Loader";
 import noDataImg from "../assets/AloLogo/nodatasearch.png";
 import EndBreakModal from "./EndBreakModal";
+import PageHero from "../Layouts/PageHero";
+import StudyIllustration from "../Layouts/StudyIllustration";
+import { FiClock, FiAlertCircle, FiTrendingUp } from "react-icons/fi";
 
 
 import {
@@ -468,7 +471,15 @@ const [isEndingBreak, setIsEndingBreak] = useState(false);
     };
   });
 
-  const loopedEvents = Array(20).fill(events).flat();
+  // Today's attendance state, rendered as a single status pill in the hero.
+  const status = isCheckedOut
+    ? { label: "Checked out", tone: "neutral" }
+    : isOnBreak
+      ? { label: "On break", tone: "warn" }
+      : isCheckedIn
+        ? { label: "Checked in", tone: "success" }
+        : { label: "Not checked in", tone: "idle" };
+
   const handlePageChange = (e, value) => setPage(value);
   const paginatedRows = rows.slice((page - 1) * rowsPerPage, page * rowsPerPage);
   const pageCount = Math.ceil(rows.length / rowsPerPage);
@@ -478,67 +489,108 @@ const [isEndingBreak, setIsEndingBreak] = useState(false);
       {loading && <Loader />}
       <ToastContainer />
 
-      <div className={styles.top}>
-        <div className={styles.text}>
-          <h1 className={styles.welcome}>Welcome Back, {user?.name}</h1>
-        </div>
-        <div className={styles.second}>
-          <p className={styles.subtitle}>Your future starts with today’s attendance</p>
-          <div className={styles.check}>
-   
-            {!isCheckedIn && !isCheckedOut ? (
-              
-              <button
-  disabled={hasCheckedInToday || isCheckingIn}
-  onClick={() => {
-    if (!hasCheckedInToday && !isCheckingIn) setCheckInModalOpen(true);
-  }}
-  className={hasCheckedInToday || isCheckingIn ? styles.disabledCheckIn : styles.checkIn}
->
-  {isCheckingIn ? "Processing..." : "Check-in"}
-</button>
+      <PageHero
+        eyebrow={status.label}
+        eyebrowTone={status.tone}
+        title="Welcome back,"
+        highlight={`${user?.name || "Student"}! 👋`}
+        subtitle="Your future starts with today’s attendance"
+        illustration={<StudyIllustration />}
+        stats={[
+          {
+            key: "permission",
+            label: "Permission Hours",
+            value: permissionHours !== null ? permissionHours : "—",
+            hint: "Total this month",
+            tone: "info",
+            icon: <FiClock />,
+          },
+          {
+            key: "late",
+            label: "Late Logins",
+            value: lateLogins !== null ? lateLogins : "—",
+            hint: "Recorded so far",
+            tone: "danger",
+            icon: <FiAlertCircle />,
+          },
+          {
+            key: "rate",
+            label: "Attendance Rate",
+            value:
+              attendanceRate !== null
+                ? attendanceRate.toString().includes("%")
+                  ? attendanceRate
+                  : `${attendanceRate}%`
+                : "—",
+            hint: "Current month",
+            tone: "success",
+            icon: <FiTrendingUp />,
+          },
+        ]}
+        action={
+          <>
+            <div className={styles.timerBox}>
+              <FiClock className={styles.timerIcon} />
+              <span className={styles.timerLabel}>Class hours today</span>
+              <span className={styles.timerValue}>{timeElapsed}</span>
+            </div>
 
-            ) : isOnBreak && !isCheckedOut ? (
-              
-              <button
-  className={styles.break}
-  disabled={isEndingBreak}          
-  onClick={() => setEndBreakModalOpen(true)}
->
-  {isEndingBreak ? "Processing..." : "End Break"}   
-</button>
+            <div className={styles.check}>
+              {!isCheckedIn && !isCheckedOut ? (
+                <button
+                  disabled={hasCheckedInToday || isCheckingIn}
+                  onClick={() => {
+                    if (!hasCheckedInToday && !isCheckingIn)
+                      setCheckInModalOpen(true);
+                  }}
+                  className={
+                    hasCheckedInToday || isCheckingIn
+                      ? styles.disabledCheckIn
+                      : styles.checkIn
+                  }
+                >
+                  {isCheckingIn ? "Processing..." : "Check-in"}
+                </button>
+              ) : isOnBreak && !isCheckedOut ? (
+                <button
+                  className={styles.break}
+                  disabled={isEndingBreak}
+                  onClick={() => setEndBreakModalOpen(true)}
+                >
+                  {isEndingBreak ? "Processing..." : "End Break"}
+                </button>
+              ) : (
+                <>
+                  {isCheckedIn &&
+                    !isOnBreak &&
+                    !isCheckedOut &&
+                    breakCount < 1 && (
+                      <button
+                        className={styles.break}
+                        disabled={isTakingBreak}
+                        onClick={() => setBreakModalOpen(true)}
+                      >
+                        {isTakingBreak ? "Processing..." : "Take Break"}
+                      </button>
+                    )}
 
-            ) : (
-              <>
-               
-               {isCheckedIn && !isOnBreak && !isCheckedOut && breakCount < 1 && (
-    <button
-      className={styles.break}
-      disabled={isTakingBreak}    
-      onClick={() => setBreakModalOpen(true)}
-    >
-      {isTakingBreak ? "Processing..." : "Take Break"}   
-    </button>
-  )}
-
-                
-                {isCheckedIn && !isCheckedOut && (
-  <button
-    className={styles.checkOut}
-    disabled={isCheckingOut}           
-    onClick={() => {
-      if (!isCheckingOut) setCheckoutOpen(true);
-    }}
-  >
-    {isCheckingOut ? "Processing..." : "Check-out"}
-  </button>
-)}
-
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+                  {isCheckedIn && !isCheckedOut && (
+                    <button
+                      className={styles.checkOut}
+                      disabled={isCheckingOut}
+                      onClick={() => {
+                        if (!isCheckingOut) setCheckoutOpen(true);
+                      }}
+                    >
+                      {isCheckingOut ? "Processing..." : "Check-out"}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          </>
+        }
+      />
 
       {loadingEvents ? (
         <div className={styles.loadingText}>Loading events...</div>
@@ -564,70 +616,28 @@ const [isEndingBreak, setIsEndingBreak] = useState(false);
         </div>
       )}
 
-      <div className={styles.cardRow}>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle}>P</button>
-            <h4>Permission Hours</h4>
-            <p>Total Permission hour: {permissionHours !== null ? permissionHours : "Loading..."}</p>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle1}>L</button>
-            <h4>Late Logins</h4>
-            <p>Total Late Logins: {lateLogins !== null ? lateLogins : "Loading..."}</p>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle1}>AR</button>
-            <h4>Attendance Rate</h4>
-            <p>
-              Percentage :
-              {attendanceRate !== null ? (attendanceRate.toString().includes("%") ? attendanceRate : `${attendanceRate}%`) : "Loading..."}
-            </p>
-          </div>
-        </div>
-        {/* <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle1}>TP</button>
-            <h4>Term Percentage</h4>
-            <p>
-              Percentage :
-              {attendanceRate !== null ? (attendanceRate.toString().includes("%") ? attendanceRate : `${attendanceRate}%`) : "Loading..."}
-            </p>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle1}>SE</button>
-            <h4>Semester Percentage</h4>
-            <p>
-              Percentage :
-              {attendanceRate !== null ? (attendanceRate.toString().includes("%") ? attendanceRate : `${attendanceRate}%`) : "Loading..."}
-            </p>
-          </div>
-        </div> */}
-
-      </div>
-
       <div className={styles.tableContainer}>
         <div className={styles.topBar}>
-          <div>Class Hours: {timeElapsed}</div>
+          <div>
+            <h2 className={styles.tableTitle}>Attendance History</h2>
+            <p className={styles.tableHint}>
+              {rows.length} record{rows.length === 1 ? "" : "s"}
+            </p>
+          </div>
           <select value={filter} onChange={(e) => setFilter(e.target.value)} className={styles.dropdown}>
             <option value="thisMonth">This Month</option>
             <option value="pastMonth">Last Month</option>
           </select>
         </div>
 
+        <div className={styles.tableScroll}>
         <table className={styles.table}>
           <thead>
             <tr>
               <th>Date</th>
-              <th>Login Time</th>
-              <th>Logout Time</th>
-              <th>Logout Remarks</th>
+              <th>Checkin Time</th>
+              <th>Checkout Time</th>
+              <th>Checkout Remarks</th>
               <th>Break Hours</th>
               <th>Class Hours</th>
               <th>Permission Hours</th>
@@ -643,11 +653,15 @@ const [isEndingBreak, setIsEndingBreak] = useState(false);
             ) : (
               paginatedRows.map((row) =>
                 row.isLeave ? (
-                  <tr key={row.id} style={{ backgroundColor: "#f8d7da", color: "#721c24", fontWeight: "bold" }}>
+                  <tr key={row.id} className={styles.leaveRow}>
                     <td>{row.date}</td>
                     <td></td>
                     <td></td>
-                    <td style={{ textAlign: "center" }}>Leave</td>
+                    <td>
+                      <span className={`${styles.chip} ${styles.chipLeave}`}>
+                        Leave
+                      </span>
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -658,14 +672,11 @@ const [isEndingBreak, setIsEndingBreak] = useState(false);
                     <td>{row.login}</td>
                     <td>{row.logout}</td>
                     <td
-                      style={{
-                        cursor: row.remarks ? "pointer" : "default",
-                        maxWidth: "150px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        color: row.remarks ? "blue" : "black",
-                      }}
+                      className={
+                        row.remarks && row.remarks.trim() !== "-"
+                          ? styles.remarksCell
+                          : undefined
+                      }
                       onClick={() => {
                         if (row.remarks && row.remarks.trim() !== "-") {
                           setSelectedRemark(row.remarks);
@@ -685,6 +696,7 @@ const [isEndingBreak, setIsEndingBreak] = useState(false);
             )}
           </tbody>
         </table>
+        </div>
 
         {paginatedRows.length > 0 && (
           <div style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}>

@@ -1,0 +1,443 @@
+/* ============================================================
+   Daily Task Update Management
+   ============================================================ */
+
+.page {
+  min-height: 100vh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* White pill that sits on the navy hero */
+.heroBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sh-2);
+  transition: transform var(--t), box-shadow var(--t), filter var(--t);
+}
+
+.heroBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-3);
+  filter: brightness(1.08);
+}
+
+.heroBtn svg {
+  font-size: 17px;
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sh-2);
+  transition: transform var(--t), box-shadow var(--t), filter var(--t);
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-3);
+  filter: brightness(1.08);
+}
+
+.primaryBtn svg {
+  font-size: 17px;
+}
+
+/* ---------------- Date bar ---------------- */
+.dateBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+}
+
+.navBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 17px;
+  cursor: pointer;
+  transition: background var(--t), color var(--t), border-color var(--t);
+}
+
+.navBtn:hover {
+  background: var(--brand-100);
+  border-color: var(--brand-200);
+  color: var(--brand-700);
+}
+
+.dateLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.todayChip {
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--success-bg);
+  color: var(--success);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.dateSpacer {
+  flex: 1 1 auto;
+}
+
+.datePicker {
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.datePicker:focus {
+  outline: none;
+  border-color: var(--brand-500);
+  box-shadow: var(--ring);
+}
+
+.ghostBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--brand-200);
+  border-radius: var(--r-sm);
+  background: var(--brand-050);
+  color: var(--brand-700);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t);
+}
+
+.ghostBtn:hover {
+  background: var(--brand-100);
+}
+
+/* ---------------- Task table ---------------- */
+.tableContainer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  padding: 12px 6px 18px;
+  overflow: hidden;
+}
+
+.tableScroll {
+  overflow-x: auto;
+  padding: 0 16px;
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+/* Gradient on the row, not per cell — otherwise it restarts in every
+   <th> and the header shows vertical banding. */
+.table thead tr {
+  background: linear-gradient(90deg, var(--brand-700) 0%, var(--brand-600) 100%);
+}
+
+.table th {
+  padding: 14px;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th:first-child {
+  border-radius: var(--r-md) 0 0 var(--r-md);
+  padding-left: 18px;
+}
+
+.table th:last-child {
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding-right: 18px;
+  text-align: right;
+}
+
+.table td {
+  padding: 15px 14px;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table td:first-child {
+  padding-left: 18px;
+}
+
+.table td:last-child {
+  padding-right: 18px;
+  text-align: right;
+}
+
+.table tbody tr {
+  transition: background var(--t);
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--surface-2);
+}
+
+.table tbody tr:hover {
+  background: var(--brand-050);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:first-child td {
+  padding-top: 18px;
+}
+
+/* ---- Task cell: toggle + title + note ---- */
+.taskCell {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 260px;
+}
+
+.taskText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.taskTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.taskDesc {
+  font-size: 12.5px;
+  color: var(--text-3);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.doneRow .taskTitle {
+  text-decoration: line-through;
+  color: var(--text-3);
+}
+
+/* Status toggle */
+.checkBtn {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
+  color: #fff;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--t);
+}
+
+.checkBtn:hover {
+  border-color: var(--brand-500);
+  transform: scale(1.12);
+}
+
+.chk_completed {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.chk_in-progress {
+  background: var(--info);
+  border-color: var(--info);
+}
+
+/* ---- Row actions ---- */
+.taskActions {
+  display: inline-flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--t);
+}
+
+.iconBtn:hover {
+  background: var(--brand-100);
+  border-color: var(--brand-200);
+  color: var(--brand-700);
+}
+
+/* ---- Status chips ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.s_pending {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+.s_in-progress {
+  background: var(--info-bg);
+  color: var(--info);
+}
+.s_completed {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+/* ---------------- Empty state ---------------- */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 52px 20px;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+}
+
+.emptyImg {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+.emptyState h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.emptyState p {
+  font-size: 13.5px;
+  color: var(--text-3);
+  max-width: 380px;
+}
+
+.emptyState .primaryBtn {
+  margin-top: 12px;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+  .heroBtn,
+  .primaryBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dateBar {
+    gap: 8px;
+  }
+
+  .dateLabel {
+    font-size: 13.5px;
+  }
+
+  .dateSpacer {
+    display: none;
+  }
+
+  .datePicker,
+  .ghostBtn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+}

@@ -1,176 +1,127 @@
 .card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 50px;
-  margin: 10px;
-  gap: 15px;
-  width:300px;
+  gap: 14px;
+
+  width: 290px;
+  flex-shrink: 0;
+  padding: 14px 16px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t), box-shadow var(--t);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-2);
 }
 
 .left {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .iconWrapper {
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
+  height: 38px;
+  width: 38px;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 18px; /* adjust icon size */
-  color: white; /* default icon color */
-  background-color: #99cafa; /* default background, overridden by .birthday/.festival */
+  font-size: 18px;
+  color: var(--brand-600);
+  background-color: var(--brand-100);
 }
 
-/* 
 .birthday {
-  background-color: #66b3ff; 
-  color: white; 
-}
-
-.festival {
-  background-color: #f5b85e; 
-  color: black; 
-} */
-.birthday {
-  color: #e91e63; /* pink */
+  color: #e91e63;
   background-color: #fde4ec;
 }
 
 .function {
-  color: #fbc02d; /* yellow */
-  background-color: #fff8e1;
+  color: #c98a00;
+  background-color: #fff6e0;
 }
 
 .anniversary {
-  color: #d32f2f; /* red */
+  color: #d32f2f;
   background-color: #ffebee;
 }
 
 .meeting {
-  color: #1976d2; /* blue */
+  color: #1976d2;
   background-color: #e3f2fd;
 }
 
 .text {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .title {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 160px;
 }
 
 .subtitle {
   font-size: 12px;
-  color: #555;
+  color: var(--text-3);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 160px;
 }
 
 .right {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: bold;
+  justify-content: center;
+  flex-shrink: 0;
+
+  min-width: 52px;
+  padding: 7px 6px;
+  border-radius: var(--r-md);
+  background: var(--brand-050);
+  line-height: 1.15;
 }
 
 .day {
-  font-size: 11.57px;
-  line-height: 1.2;
-  font-weight: 500;
-  color: #144196;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--brand-600);
 }
 
 .monthYear {
-  font-size: 5.79px;
-  font-weight: 500;
-}
-/* ================= Responsive Cards ================= */
-
-/* Tablet and small desktop (≤1024px) */
-@media (max-width: 1024px) {
-  .cardRow {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  .card {
-    width: 300px; /* keep original card width */
-  }
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--text-3);
+  white-space: nowrap;
 }
 
-/* Tablet and mobile (≤768px) */
-@media (max-width: 768px) {
-  .cardRow {
-    justify-content: center;
-  }
-
-  .card {
-    width: 280px; /* slightly smaller for tablet */
-    margin: 8px;
-  }
-
-  .subtitle {
-    max-width: 120px; /* reduce text width */
-  }
-}
-
-/* Mobile (≤480px) */
 @media (max-width: 480px) {
-  .cardRow {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .card {
-    width: 90%;      /* fit small screens */
-    max-width: 300px; /* maintain original style */
-    margin: 6px 0;
-    gap: 10px;
-    padding: 12px;
+    width: 260px;
+    padding: 12px 14px;
   }
 
+  .title,
   .subtitle {
-    max-width: 100px; /* shorter width for mobile */
-    font-size: 11px;
-  }
-
-  .title {
-    font-size: 11px;
-  }
-
-  .iconWrapper {
-    height: 28px;
-    width: 28px;
-    font-size: 16px;
-  }
-
-  .day {
-    font-size: 10px;
-  }
-
-  .monthYear {
-    font-size: 5px;
-  }
-
-  .right {
-    gap: 2px;
+    max-width: 130px;
   }
 }

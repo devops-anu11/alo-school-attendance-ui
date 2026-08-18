@@ -10,9 +10,39 @@ import {
   updateNotification,
 } from "../api/serviceapi";
 import { FaUserCircle } from "react-icons/fa";
+import {
+  FiCalendar,
+  FiCheckSquare,
+  FiLogOut,
+  FiBell,
+  FiFileText,
+  FiAward,
+  FiMessageSquare,
+  FiShield,
+  FiSend,
+  FiX,
+} from "react-icons/fi";
+
+/* Single source of truth for the top navigation. Adding a menu item
+   means adding one entry here — the desktop bar and the mobile drawer
+   both render from this list. */
+const NAV_ITEMS = [
+  { label: "Attendance", path: "dashboard", icon: FiCalendar },
+  { label: "Daily Tasks", path: "daily-tasks", icon: FiCheckSquare },
+  { label: "Leave", path: "leave-management", icon: FiSend },
+  { label: "Academics", path: "academics", icon: FiAward },
+  { label: "Complaint", path: "complaint", icon: FiMessageSquare },
+  { label: "Harassment", path: "harassment", icon: FiShield },
+  { label: "Policies", path: "policies", icon: FiFileText },
+];
 
 const Header = ({ handleLogout }) => {
   const userId = localStorage.getItem("userId");
+  const courseStatus = sessionStorage.getItem("courseStatus");
+    const navItems =
+    courseStatus === "completed"
+      ? NAV_ITEMS.filter((item) => item.path === "academics")
+      : NAV_ITEMS;
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -21,8 +51,7 @@ const Header = ({ handleLogout }) => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dropdownRef = useRef(null);
-  const notifyIconRef = useRef(null);
+  const notifyWrapRef = useRef(null);
 
   // Fetch notifications
   const fetchNotification = useCallback(async () => {
@@ -34,7 +63,7 @@ const Header = ({ handleLogout }) => {
     } catch (err) {
       console.error(err.message);
     }
-  });
+  }, [userId]);
 
   // Fetch user profile
   const fetchUser = useCallback(async () => {
@@ -46,24 +75,23 @@ const Header = ({ handleLogout }) => {
     } catch (err) {
       console.error(err.message);
     }
-  });
+  }, [userId]);
 
   useEffect(() => {
     fetchUser();
     fetchNotification();
-    const interval = setInterval(fetchNotification, 3000);
+    const interval = setInterval(fetchNotification, 30000);
     return () => clearInterval(interval);
-  }, [userId]);
+  }, [fetchUser, fetchNotification]);
 
-  // Close dropdown if clicked outside
+  // Close dropdown if clicked outside. The wrapper holds both the bell
+  // and the panel, so one ref covers the whole interactive area.
   useEffect(() => {
+    if (!showNotifications) return;
     const handleClickOutside = (event) => {
       if (
-        showNotifications &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        notifyIconRef.current &&
-        !notifyIconRef.current.contains(event.target)
+        notifyWrapRef.current &&
+        !notifyWrapRef.current.contains(event.target)
       ) {
         setShowNotifications(false);
       }
@@ -72,11 +100,19 @@ const Header = ({ handleLogout }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showNotifications]);
 
-  // Close dropdown & hamburger on route change
+  // Close dropdown & drawer on route change
   useEffect(() => {
     setShowNotifications(false);
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  // Lock body scroll while the mobile drawer is open
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
 
   const confirmLogout = () => {
     if (typeof handleLogout === "function") handleLogout();
@@ -86,8 +122,7 @@ const Header = ({ handleLogout }) => {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("studentId");
-        navigate("/login", { replace: true });
-
+    navigate("/login", { replace: true });
   };
 
   const handleBellClick = async () => {
@@ -104,228 +139,222 @@ const Header = ({ handleLogout }) => {
   };
 
   const handleNavClick = (path) => {
-    navigate(path);
+    const courseStatus = sessionStorage.getItem("courseStatus");
+    
+    // If course is completed, only allow academics route
+    if (courseStatus === "completed" && path !== "academics") {
+      return;
+    }
+    
+    navigate(`/${path}/${userId}`, { replace: false });
     setIsMobileMenuOpen(false);
   };
 
+  const unreadCount = notifi.filter((n) => !n.isRead).length;
+  const isActive = (path) => location.pathname.includes(`/${path}`);
+
+  const avatar = userProfile?.profileURL ? (
+    <img
+      src={userProfile.profileURL}
+      alt={userProfile?.name || "User"}
+      className={styles.profilePic}
+    />
+  ) : (
+    <FaUserCircle className={styles.profileFallback} />
+  );
+
   return (
-    <header className={styles.headerContainer}>
-      {/* Logo */}
-      <div
-        className={styles.logoWrapper}
-        onClick={() => navigate(`/dashboard/${userId}`)}
-        style={{ cursor: "pointer" }} // makes it look clickable
-      >
-        <img src={logo} alt="ALO Logo" className={styles.logo} />
-      </div>
-
-      {/* Hamburger + Mobile Right Section */}
-      <div className={styles.rightSectionMobile}>
-        {/* Notification */}
-        <div className={styles.notificationWrapper}>
-          <i
-            ref={notifyIconRef}
-            className={`fa-solid fa-bell ${styles.notificationIcon}`}
-            onClick={handleBellClick}
-          />
-          {notifi.some((n) => !n.isRead) && (
-            <span className={styles.redDot}></span>
-          )}
-          {showNotifications && (
-            <div className={styles.dropdown} ref={dropdownRef}>
-              <div className={styles.dropdownHeaderWrapper}>
-                <h3 className={styles.dropdownHeader}>Notifications</h3>
-                <button
-                  className={styles.closeBtn}
-                  onClick={() => setShowNotifications(false)}
-                >
-                  &times;
-                </button>
-              </div>
-              {notifi.length === 0 ? (
-                <p className={styles.noNotifications}>No notifications</p>
-              ) : (
-                notifi.map((n) => {
-                  const dateObj = new Date(n.date);
-                  return (
-                    <div key={n._id} className={styles.notificationItem}>
-                      <div className={styles.textBlock}>
-                        <h4>{n.message}</h4>
-                        {n.subMessage && <p>{n.subMessage}</p>}
-                      </div>
-                      <div className={styles.dateBlock}>
-                        <span className={styles.day}>{dateObj.getDate()}</span>
-                        <span className={styles.monthYear}>
-                          {dateObj.toLocaleString("default", {
-                            month: "short",
-                            year: "2-digit",
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Logout */}
-        <i
-          className={`fa-solid fa-arrow-right-from-bracket ${styles.logoutIcon}`}
-          onClick={() => setShowLogoutModal(true)}
-        />
-
-        {/* Hamburger */}
-        <button
-          className={styles.hamburger}
-          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+    <>
+      <header className={styles.headerContainer}>
+        {/* Logo */}
+        <div
+          className={styles.logoWrapper}
+          onClick={() => {
+            const courseStatus = sessionStorage.getItem("courseStatus");
+            const targetPath = courseStatus === "completed" ? "academics" : "dashboard";
+            if (location.pathname.includes(`/${targetPath}`)) return;
+            navigate(`/${targetPath}/${userId}`, { replace: false });
+          }}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              const courseStatus = sessionStorage.getItem("courseStatus");
+              const targetPath = courseStatus === "completed" ? "academics" : "dashboard";
+              if (!location.pathname.includes(`/${targetPath}`)) {
+                navigate(`/${targetPath}/${userId}`, { replace: false });
+              }
+            }
+          }}
         >
-          <span
-            className={`${styles.bar} ${isMobileMenuOpen ? styles.open : ""}`}
-          />
-          <span
-            className={`${styles.bar} ${isMobileMenuOpen ? styles.open : ""}`}
-          />
-          <span
-            className={`${styles.bar} ${isMobileMenuOpen ? styles.open : ""}`}
-          />
-        </button>
-      </div>
+          <img src={logo} alt="ALO School" className={styles.logo} />
+        </div>
 
-      {/* Nav Links */}
-      <nav
-        className={`${styles.nav} ${isMobileMenuOpen ? styles.mobileOpen : ""}`}
-      >
-        <div className={styles.links}>
-          <button
-            className={`${styles.linkBtn} ${
-              location.pathname.includes("/dashboard") ? styles.activeLink : ""
-            }`}
-            onClick={() => handleNavClick(`/dashboard/${userId}`)}
-          >
-            Attendance
-          </button>
-          <button
-            className={`${styles.linkBtn} ${
-              location.pathname.includes("/leave-management")
-                ? styles.activeLink
-                : ""
-            }`}
-            onClick={() => handleNavClick(`/leave-management/${userId}`)}
-          >
-            Leave Management
-          </button>
-          <button
-            className={`${styles.linkBtn} ${
-              location.pathname.includes("/policies") ? styles.activeLink : ""
-            }`}
-            onClick={() => handleNavClick(`/policies/${userId}`)}
-          >
-            Policies
-          </button>
-          <button
-            className={`${styles.linkBtn} ${
-              location.pathname.includes("/academics") ? styles.activeLink : ""
-            }`}
-            onClick={() => handleNavClick(`/academics/${userId}`)}
-          >
-            Academics
-          </button>
-          <button
-            className={`${styles.linkBtn} ${
-              location.pathname.includes("/complaint") ? styles.activeLink : ""
-            }`}
-            onClick={() => handleNavClick(`/complaint/${userId}`)}
-          >
-            Complaint
-          </button>
+        {/* Desktop nav */}
+        <nav className={styles.nav} aria-label="Main">
+          {navItems.map(({ label, path, icon: Icon }) => (
+            <button
+              key={path}
+              className={`${styles.linkBtn} ${
+                isActive(path) ? styles.activeLink : ""
+              }`}
+              onClick={() => handleNavClick(path)}
+            >
+              <Icon className={styles.linkIcon} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+
+        {/* Right actions */}
+        <div className={styles.rightSection}>
+          <div className={styles.notificationWrapper} ref={notifyWrapRef}>
+            <button
+              className={styles.iconBtn}
+              onClick={handleBellClick}
+              aria-label={`Notifications${
+                unreadCount ? `, ${unreadCount} unread` : ""
+              }`}
+            >
+              <FiBell />
+              {unreadCount > 0 && (
+                <span className={styles.badge}>
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </button>
+
+            {showNotifications && (
+              <div className={styles.dropdown}>
+                <div className={styles.dropdownHeaderWrapper}>
+                  <h3 className={styles.dropdownHeader}>Notifications</h3>
+                  <button
+                    className={styles.closeBtn}
+                    onClick={() => setShowNotifications(false)}
+                    aria-label="Close notifications"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+
+                <div className={styles.dropdownBody}>
+                  {notifi.length === 0 ? (
+                    <p className={styles.noNotifications}>
+                      You’re all caught up 🎉
+                    </p>
+                  ) : (
+                    notifi.map((n) => {
+                      const dateObj = new Date(n.date);
+                      return (
+                        <div
+                          key={n._id}
+                          className={`${styles.notificationItem} ${
+                            n.isRead ? "" : styles.unread
+                          }`}
+                        >
+                          <div className={styles.textBlock}>
+                            <h4>{n.message}</h4>
+                            {n.subMessage && <p>{n.subMessage}</p>}
+                          </div>
+                          <div className={styles.dateBlock}>
+                            <span className={styles.day}>
+                              {dateObj.getDate()}
+                            </span>
+                            <span className={styles.monthYear}>
+                              {dateObj.toLocaleString("default", {
+                                month: "short",
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.profile}>
+            {avatar}
+            <div className={styles.profileInfo}>
+              <h4>{userProfile?.name || "User"}</h4>
+              <p>{userProfile?.courseDetails?.courseName || "Loading…"}</p>
+            </div>
+          </div>
 
           <button
-            className={`${styles.linkBtn} ${
-              location.pathname.includes("/harassment") ? styles.activeLink : ""
-            }`}
-            onClick={() => handleNavClick(`/harassment/${userId}`)}
+            className={`${styles.iconBtn} ${styles.logoutBtn}`}
+            onClick={() => setShowLogoutModal(true)}
+            aria-label="Log out"
           >
-            Harassment
+            <FiLogOut />
+          </button>
+
+          {/* Hamburger — only visible on compact screens */}
+          <button
+            className={styles.hamburger}
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+          >
+            <span
+              className={`${styles.bar} ${isMobileMenuOpen ? styles.open : ""}`}
+            />
+            <span
+              className={`${styles.bar} ${isMobileMenuOpen ? styles.open : ""}`}
+            />
+            <span
+              className={`${styles.bar} ${isMobileMenuOpen ? styles.open : ""}`}
+            />
           </button>
         </div>
-      </nav>
+      </header>
 
-      <div className={`${styles.rightSection} ${styles.hideOnMobile}`}>
-        <div className={styles.profile}>
-          {userProfile?.profileURL ? (
-            <img
-              src={userProfile.profileURL}
-              alt={userProfile?.name || "User"}
-              className={styles.profilePic}
-            />
-          ) : (
-            <FaUserCircle
-              size={50}
-              color="#ccc"
-              className={styles.profilePic}
-            />
-          )}
+      {/* Mobile drawer */}
+      <div
+        className={`${styles.scrim} ${isMobileMenuOpen ? styles.scrimOpen : ""}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      <aside
+        className={`${styles.drawer} ${
+          isMobileMenuOpen ? styles.drawerOpen : ""
+        }`}
+      >
+        <div className={styles.drawerProfile}>
+          {avatar}
           <div className={styles.profileInfo}>
             <h4>{userProfile?.name || "User"}</h4>
-            <p>{userProfile?.courseDetails?.courseName || "loading ....."}</p>
+            <p>{userProfile?.courseDetails?.courseName || "Loading…"}</p>
           </div>
         </div>
 
-        <i
-          className={`fa-solid fa-arrow-right-from-bracket ${styles.logoutIcon}`}
-          onClick={() => setShowLogoutModal(true)}
-        />
+        <nav className={styles.drawerNav} aria-label="Mobile">
+          {navItems.map(({ label, path, icon: Icon }) => (
+            <button
+              key={path}
+              className={`${styles.drawerLink} ${
+                isActive(path) ? styles.drawerLinkActive : ""
+              }`}
+              onClick={() => handleNavClick(path)}
+            >
+              <Icon className={styles.drawerIcon} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
 
-        <div className={styles.notificationWrapper}>
-          <i
-            ref={notifyIconRef}
-            className={`fa-solid fa-bell ${styles.notificationIcon}`}
-            onClick={handleBellClick}
-          />
-          {notifi.some((n) => !n.isRead) && (
-            <span className={styles.redDot}></span>
-          )}
-          {showNotifications && (
-            <div className={styles.dropdown} ref={dropdownRef}>
-              <div className={styles.dropdownHeaderWrapper}>
-                <h3 className={styles.dropdownHeader}>Notifications</h3>
-                <button
-                  className={styles.closeBtn}
-                  onClick={() => setShowNotifications(false)}
-                >
-                  &times;
-                </button>
-              </div>
-              {notifi.length === 0 ? (
-                <p className={styles.noNotifications}>No notifications</p>
-              ) : (
-                notifi.map((n) => {
-                  const dateObj = new Date(n.date);
-                  return (
-                    <div key={n._id} className={styles.notificationItem}>
-                      <div className={styles.textBlock}>
-                        <h4>{n.message}</h4>
-                        {n.subMessage && <p>{n.subMessage}</p>}
-                      </div>
-                      <div className={styles.dateBlock}>
-                        <span className={styles.day}>{dateObj.getDate()}</span>
-                        <span className={styles.monthYear}>
-                          {dateObj.toLocaleString("default", {
-                            month: "short",
-                            year: "2-digit",
-                          })}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+        <button
+          className={styles.drawerLogout}
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            setShowLogoutModal(true);
+          }}
+        >
+          <FiLogOut /> Log out
+        </button>
+      </aside>
 
       {/* Logout Modal */}
       {showLogoutModal && (
@@ -334,7 +363,7 @@ const Header = ({ handleLogout }) => {
           onConfirmLogout={confirmLogout}
         />
       )}
-    </header>
+    </>
   );
 };
 

@@ -1,0 +1,245 @@
+/* ============================================================
+   ALO School — shared design tokens & global primitives
+   Single source of truth for colour, spacing, radius, shadow.
+   Every module CSS should consume these variables instead of
+   hard-coding hex values.
+   ============================================================ */
+
+:root {
+  /* ---- Brand (navy) ---- */
+  --brand-900: #061530;
+  --brand-800: #0a2350;
+  --brand-700: #0b2d73;
+  --brand-600: #144196;
+  --brand-500: #1c56c0;
+  --brand-400: #3f7ae0;
+  --brand-200: #c7d9f7;
+  --brand-100: #e8effc;
+  --brand-050: #f4f8ff;
+
+  --brand-gradient: linear-gradient(135deg, #144196 0%, #061530 100%);
+  --brand-gradient-soft: linear-gradient(135deg, #1c56c0 0%, #0b2d73 100%);
+
+  /* ---- Semantic ---- */
+  --success: #12894a;
+  --success-bg: #e6f6ed;
+  --warn: #b06a00;
+  --warn-bg: #fff4e0;
+  --danger: #d92d20;
+  --danger-bg: #fdecea;
+  --info: #0b74c4;
+  --info-bg: #e7f2fb;
+  --accent: #f5a623;
+
+  /* ---- Surfaces & text ---- */
+  --bg: #f4f6fb;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e4e9f2;
+  --border-strong: #cfd8e8;
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #8592a6;
+
+  /* ---- Radius ---- */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* ---- Elevation ---- */
+  --sh-1: 0 1px 2px rgba(16, 24, 40, 0.05), 0 1px 3px rgba(16, 24, 40, 0.07);
+  --sh-2: 0 4px 14px rgba(16, 24, 40, 0.08);
+  --sh-3: 0 14px 36px rgba(6, 21, 48, 0.14);
+  --ring: 0 0 0 3px rgba(28, 86, 192, 0.22);
+
+  /* ---- Layout ---- */
+  --header-h: 76px;
+  --page-max: 1440px;
+  --gutter: 24px;
+
+  /* ---- Motion ---- */
+  --t: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-h: 64px;
+    --gutter: 16px;
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Keyboard users get a visible focus ring everywhere. */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: var(--r-sm);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ============================================================
+   Shared page shell — usable from any component via plain
+   class names (these are global, not CSS-module scoped).
+   ============================================================ */
+
+.aloPage {
+  min-height: 100vh;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 48px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  animation: aloFadeUp 0.35s ease-out both;
+}
+
+.aloPageHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.aloTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.aloSub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--text-3);
+}
+
+@keyframes aloFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Third-party overrides (antd + MUI) so vendor widgets match
+   the rest of the UI.
+   ============================================================ */
+
+.ant-picker {
+  border-radius: var(--r-sm) !important;
+  border-color: var(--border-strong) !important;
+  padding: 9px 12px !important;
+}
+
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: var(--brand-500) !important;
+  box-shadow: none !important;
+}
+
+/* antd renders date/time popups into a body-level portal at z-index 1050,
+   which puts them *behind* our modals (2000). Lift them above. */
+.ant-picker-dropdown,
+.ant-select-dropdown,
+.ant-tooltip {
+  z-index: 2300 !important;
+}
+
+.ant-picker-dropdown .ant-picker-panel-container {
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-3);
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: var(--brand-600) !important;
+  color: #fff !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border-color: var(--brand-500) !important;
+}
+
+.ant-picker-dropdown .ant-btn-primary {
+  background: var(--brand-600) !important;
+  border-color: var(--brand-600) !important;
+}
+
+.MuiPagination-root .MuiPaginationItem-root {
+  border-radius: var(--r-sm) !important;
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 500 !important;
+  color: var(--text-2) !important;
+}
+
+.MuiPagination-root .MuiPaginationItem-root:hover {
+  background: var(--brand-100) !important;
+  color: var(--brand-700) !important;
+}
+
+.MuiPagination-root .Mui-selected {
+  background: var(--brand-gradient) !important;
+  color: #fff !important;
+}
+
+/* Toasts sit below the fixed header. */
+.Toastify__toast-container--top-right {
+  top: calc(var(--header-h) + 12px) !important;
+}
+
+.Toastify__toast {
+  border-radius: var(--r-md) !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 14px !important;
+  box-shadow: var(--sh-2) !important;
+}
+
+/* ============================================================
+   Scrollbars — thin and unobtrusive, but visible (the old build
+   hid them entirely, which made scrollable panels undiscoverable).
+   ============================================================ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--r-pill);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--text-3);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}

@@ -1,154 +1,189 @@
+/* ============================================================
+   Login
+   ============================================================ */
+
 .loginPage {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: radial-gradient(circle at top, #0a1b64, #010314);
+  min-height: 100dvh;
+  padding: 24px 16px;
+
+  background-color: var(--brand-900);
   background-image: url("../assets/AloLogo/backcolor.jpg");
   background-size: cover;
   background-position: center;
   overflow: hidden;
-  padding: 10px;
- }
-.content{
-  margin-bottom:40px;
-  text-align: center;
-} 
-.card {
-  background: #fff;
-  padding: 40px 40px;
-  width: 100%;
-  margin-top:10px;
-  padding-top: 10px;
-  max-width:500px;
-  border-radius: 16px;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
-  text-align: center;
 }
 
-/* Make sure content stack flows nicely */
+/* Navy wash over the photo so the card always has contrast */
+.loginPage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    140deg,
+    rgba(6, 21, 48, 0.9) 0%,
+    rgba(20, 65, 150, 0.72) 100%
+  );
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  padding: 36px 38px 40px;
+
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--r-xl);
+  box-shadow: 0 24px 60px rgba(2, 8, 24, 0.45);
+  text-align: center;
+  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------- Brand ---------------- */
 .logoWrapper {
   display: flex;
-  flex-direction: column;   /* stack logo + text vertically */
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
-;
-  
+  margin-bottom: 18px;
 }
 
-/* Center title + subtitle under logo */
-
-
-.subTitle {
-  font-size: 0.95rem;
-  color: #555;
-  /* space below subtitle before inputs */
-  text-align: center;
-}
-
-
-/* Big Logo */
 .logoWrapper img {
-  width: 270px;   /* keep big logo */
+  width: 220px;
   height: auto;
   object-fit: contain;
-  
+}
+
+.content {
+  margin-bottom: 28px;
 }
 
 .card h2 {
-  font-size: 1.6rem;
+  font-size: 24px;
   font-weight: 700;
-  color: #222;
-  margin: 4px 0;   /* much smaller vertical margin */
-  text-align: center;
+  letter-spacing: -0.3px;
+  color: var(--text);
 }
 
+.subTitle {
+  margin-top: 5px;
+  font-size: 14px;
+  color: var(--text-3);
+}
 
-/* Smaller input fields */
-.inputBox input {
-  width: 80%;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.85rem;
-  background-color: #f8f8f8;
-  box-sizing: border-box;
+/* ---------------- Fields ---------------- */
+.inputBox {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.inputBox input,
+.passwordWrapper input {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color var(--t), box-shadow var(--t), background var(--t);
 }
 
 .passwordWrapper {
   position: relative;
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .passwordWrapper input {
-  width: 100%;
-  padding: 10px 40px 10px 12px; /* space for eye icon */
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.85rem;
-  background-color: #f8f8f8;
-  box-sizing: border-box;
+  padding-right: 46px;
 }
 
-
-
-.inputBox {
-   margin-bottom: 27px; 
-  text-align: center;
+.inputBox input::placeholder {
+  color: var(--text-3);
 }
 
-
-
-.errorMsg {
-  font-size: 0.8rem;
-  color: red;
-  margin-top: 4px;
-  text-align: start;
-  margin-left: 39px;
+.inputBox input:focus,
+.passwordWrapper input:focus {
+  outline: none;
+  background: var(--surface);
+  border-color: var(--brand-500);
+  box-shadow: var(--ring);
 }
-/* 
-/* Password wrapper with eye icon */
-
 
 .eyeIcon {
   position: absolute;
-  right: 12px;             /* stays inside input */
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
+  display: inline-flex;
   cursor: pointer;
-  color: #666;
-  font-size: 1.1rem;
+  color: var(--text-3);
+  font-size: 17px;
+  transition: color var(--t);
 }
 
+.eyeIcon:hover {
+  color: var(--brand-600);
+}
 
-/* Forgot password link */
+.errorMsg {
+  min-height: 16px;
+  margin-top: 5px;
+  padding-left: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--danger);
+  text-align: left;
+}
 
-/* Login button */
+/* ---------------- Submit ---------------- */
 .loginBtn {
-  width: 80%;
-  padding: 10px;
-  background: linear-gradient(to right, #0a1b64, #020c3a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 13px;
+
   border: none;
-  border-radius: 8px;
+  border-radius: var(--r-md);
+  background: var(--brand-gradient);
   color: #fff;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-.loginBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  box-shadow: var(--sh-2);
+  transition: transform var(--t), filter var(--t), box-shadow var(--t);
 }
 
 .loginBtn:hover:not(:disabled) {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: var(--sh-3);
 }
 
-/* Loader inside button */
+.loginBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .loader {
   display: flex;
   align-items: center;
@@ -159,36 +194,22 @@
   fill: #fff;
 }
 
-/* Responsive */
+.customToast {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+}
+
+/* ---------------- Responsive ---------------- */
 @media (max-width: 480px) {
- 
-
-  .passwordWrapper {
-    width: 100%;  /* full width on small screens */
+  .card {
+    padding: 28px 20px 32px;
   }
-
 
   .card h2 {
-    font-size: 1.4rem;
-  }
-
-  .subTitle {
-    font-size: 0.85rem;
-  }
-   .inputBox input,
-  .passwordWrapper,
-  .loginBtn {
-    width: 100%;   /* all inputs/buttons full width */
-  }
-
-  .card {
-    padding: 25px 15px;
+    font-size: 21px;
   }
 
   .logoWrapper img {
-    width: 200px;
-  }
-  .errorMsg{
-    text-align: left;
+    width: 180px;
   }
 }

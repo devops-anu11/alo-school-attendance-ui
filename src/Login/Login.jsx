@@ -67,6 +67,7 @@ const Login = ({ setLoginUser }) => {
           const token = res?.data?.data.token;
           const userId = res?.data?.data?.data.userId;
           const studentId = res?.data?.data?.data.studentId;
+            const courseStatus = res?.data?.data?.data.inStatus;
 
           localStorage.setItem("authToken", token);
           localStorage.setItem("userId", userId);
@@ -74,9 +75,15 @@ const Login = ({ setLoginUser }) => {
           sessionStorage.setItem("authToken", token);
           sessionStorage.setItem("userId", userId);
           sessionStorage.setItem("studentId", studentId);
+          sessionStorage.setItem("courseStatus", courseStatus);
 
           setLoginUser(true);
+           // Redirect based on course status
+        if (courseStatus === "completed") {
+          navigate(`/academics/${userId}`, { replace: true });
+        } else {
           navigate(`/dashboard/${userId}`, { replace: true });
+        }
         }
       } catch (err) {
         const errorMsg =

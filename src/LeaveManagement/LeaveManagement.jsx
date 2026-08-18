@@ -13,6 +13,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../loader/Loader"
 import noDataImg from "../assets/AloLogo/nodatasearch.png"
+import PageHero from "../Layouts/PageHero";
+import { FiThermometer, FiSun, FiClock } from "react-icons/fi";
 
 const LeaveManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +32,8 @@ const LeaveManagement = () => {
   const [remarkPopup, setRemarkPopup] = useState({
     isOpen: false,
     text: "",
+    status: "",
+    adminReason: null,
   });
 
   const fetchTable = async () => {
@@ -151,6 +155,8 @@ const LeaveManagement = () => {
       name: data.userDetails?.name || "Unknown",
       type: leaveType,
       remarks: data.discription,
+      approvedReason: data.approvedReason,
+      rejectReason: data.rejectReason,
       requestedOn,
       period,
       days,
@@ -269,39 +275,42 @@ const handleModalSubmit = async (formData) => {
 />
 
       {/* Leave summary cards */}
-      <div className={styles.row}>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle}>SL</button>
-            <h4>Sick Leave</h4>
-            <p>Total Sick Leave: {leaveStats.sickLeaveTaken}</p>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle1}>CL</button>
-            <h4>Casual Leave</h4>
-            <p>Total Casual Leave: {leaveStats.casualLeaveTaken}</p>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.card}>
-            <button className={styles.circle}>SL</button>
-            <h4>Requested Leave Status</h4>
-            <p>
-              Recent requested Leave:{" "}
-              <b>{leaveData.length > 0 ? leaveData[0]?.status || "Pending" : "Nill"}</b>
-            </p>
-          </div>
-        </div>
-        <div className={styles.col}>
-          <div className={styles.card1}>
-            <button className={styles.button} onClick={() => setIsModalOpen(true)}>
-              Request Leave
-            </button>
-          </div>
-        </div>
-      </div>
+      <PageHero
+        title="Leave Management"
+        subtitle="Request time off and track where each request stands."
+        action={
+          <button className={styles.heroBtn} onClick={() => setIsModalOpen(true)}>
+            + Request Leave
+          </button>
+        }
+        stats={[
+          {
+            key: "sick",
+            label: "Sick Leave",
+            value: leaveStats.sickLeaveTaken,
+            hint: "Taken this year",
+            tone: "danger",
+            icon: <FiThermometer />,
+          },
+          {
+            key: "casual",
+            label: "Casual Leave",
+            value: leaveStats.casualLeaveTaken,
+            hint: "Taken this year",
+            tone: "warn",
+            icon: <FiSun />,
+          },
+          {
+            key: "latest",
+            label: "Latest Request",
+            value:
+              leaveData.length > 0 ? leaveData[0]?.status || "Pending" : "None",
+            hint: "Most recent status",
+            tone: "info",
+            icon: <FiClock />,
+          },
+        ]}
+      />
 
       {/* Leave table */}
       <div className={styles.container}>
@@ -337,10 +346,22 @@ const handleModalSubmit = async (formData) => {
                     <span className={getStatusClass(data.status)}>{data.status}</span>
                   </td>
                   <td>
-                    {data.remarks ? (
+                    {data.remarks || data.rejectReason || data.approvedReason ? (
                       <FaEye
                         style={{ cursor: "pointer" }}
-                        onClick={() => setRemarkPopup({ isOpen: true, text: data.remarks })}
+                        onClick={() =>
+                          setRemarkPopup({
+                            isOpen: true,
+                            text: data.remarks,
+                            status: data.status,
+                            adminReason:
+                              data.status === "Rejected"
+                                ? data.rejectReason
+                                : data.status === "Approved"
+                                ? data.approvedReason
+                                : null,
+                          })
+                        }
                       />
                     ) : (
                       "-"
@@ -419,6 +440,16 @@ const handleModalSubmit = async (formData) => {
           >
             <h3>Remarks</h3>
             <p>{remarkPopup.text}</p>
+            {remarkPopup.adminReason && (
+              <>
+                <h3>
+                  {remarkPopup.status === "Rejected"
+                    ? "Reason for Rejection"
+                    : "Admin Remark"}
+                </h3>
+                <p>{remarkPopup.adminReason}</p>
+              </>
+            )}
             <button onClick={() => setRemarkPopup({ isOpen: false, text: "" })}>Close</button>
           </div>
         </div>

@@ -1,396 +1,160 @@
+/* ============================================================
+   Dashboard / Attendance
+   ============================================================ */
+
 .container {
   min-height: 100vh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------- Hero widgets (passed into PageHero) ---------------- */
+.timerBox {
+  position: relative;
   display: flex;
   flex-direction: column;
-  font-family: "Poppins", sans-serif;
-  background-color: white;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 20px;
-  box-sizing: border-box;
-
-  scrollbar-width: none;       
-  -ms-overflow-style: none;   
+  gap: 3px;
+  min-width: 190px;
+  padding: 11px 42px 11px 18px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-1);
 }
 
-.container::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-  background: transparent;
+.timerIcon {
+  position: absolute;
+  top: 11px;
+  right: 14px;
+  font-size: 17px;
+  color: var(--brand-400);
 }
 
-
-.top {
-  margin-top: 100px;
+.timerLabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-3);
 }
 
-.welcome {
-  font-size: 36px;
-  font-weight: 700;
-  background: linear-gradient(to bottom, #144196, #061530);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-left: 15px;
+.timerValue {
+  font-size: 23px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-500);
 }
 
-.second {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 12px;
-}
-
+/* ---------------- Action buttons ---------------- */
 .check {
   display: flex;
-  gap: 17px;
-  padding: 5px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .checkIn,
-.checkOut {
-  color: white;
+.checkOut,
+.break,
+.disabledCheckIn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
   border: none;
-  border-radius: 4px;
-  padding: 14px 14px;
+  border-radius: var(--r-pill);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: 0.3s;
+  white-space: nowrap;
+  box-shadow: var(--sh-1);
+  transition: transform var(--t), filter var(--t), box-shadow var(--t);
+}
+
+.checkIn:hover,
+.checkOut:hover,
+.break:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: var(--sh-2);
 }
 
 .checkIn {
-  background: #2d8011;
-}
-.checkIn:hover {
-  background: #1f5c0b;
+  background: #16a34a;
 }
 
 .checkOut {
-  background: #ee3623;
-  margin-bottom: 15px;
-}
-.checkOut:hover {
-  background: #c72c1d;
+  background: #e2483c;
 }
 
-
-.cardRow {
-        flex: 0 0 auto;
-        display: grid;
-        grid-template-columns: 300px 300px 300px 300px;
-        gap: 20px;
-        margin: 20px 0;
-        padding:10px;
-      }
-
-      .card {
-        border-radius: 7px;
-        box-shadow: 0 1px 3px rgba(175, 175, 175, 0.7);
-        padding: 10px;
-        background: #fff;
-      }
-
-
-
-.col {
-  flex: 1 1 200px; 
+.break {
+  background: #f59e0b;
+  color: #3b2500;
 }
 
-
-p {
-  color: #717171;
-  font-size: 14px;
+.disabledCheckIn {
+  background: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-.circle,
-.circle1 {
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  border: none;
-  color: #fff;
-  font-weight: bold;
+.checkIn:disabled,
+.checkOut:disabled,
+.break:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.circle {
-  background-color: #ffb74d;
-  color: #000;
-}
-
-.circle1 {
-  background-color: #ff654d;
-}
-
-
-.tableContainer {
-  flex: 1;
-  overflow: visible;
-  background-color: #3c96c70f;
-  padding: 14px;
-  border-radius: 8px;
-}
-
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background-color: #3c96c70f;
-}
-
-th {
-  background: linear-gradient(to bottom, #0b2d73, #000814);
-  padding: 10px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: center;
-}
-
-td {
-  padding: 10px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-
-.remarksCell {
-  max-width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  color: blue;
-}
-
-
-.popupOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.popupContent {
-  background: white;
-  color: black;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 80%;
-  text-align: center;
-}
-
-.popupHeader {
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.popupText {
-  margin-bottom: 20px;
-  font-size: 16px;
-  word-wrap: break-word;
-}
-
-.popupCloseBtn {
-  background: white;
-  color: #007bff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
-.dropdown{
-  width:fit-content;
-  outline-color: #007bff;
- 
-}
-.popupCloseBtn:hover {
-  color: black;
-  background: #f1f1f1;
-}
-
-@media (max-width: 1024px) {
-  .welcome { font-size: 32px; }
-  .subtitle { font-size: 18px; }
-}
-
-@media (max-width: 768px) {
-  .welcome {
-    font-size: 28px;
-    margin-left: 8px;
-  }
-
-  .subtitle {
-    font-size: 16px;
-    margin-left: 8px;
-  }
- .table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .second {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .check {
-    width: 100%;
-    justify-content: center;
-    margin-top: 10px;
-    gap: 10px;
-  }
-
-  .checkIn,
-  .checkOut {
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-  }
-
-  .cardRow {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-  }
-
-  
-  .marqueeContainer {
-    height: 100px;
-  }
-
-  .marqueeContent > div {
-    min-width: 160px;
-  }
-}
-
-
-@media (max-width: 480px) {
-  .welcome {
-    font-size: 20px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-    margin-left: 5px;
-  }
-
-  .check {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-
-  .checkIn,
-  .checkOut {
-    width: 100%;
-    font-size: 14px;
-    padding: 12px;
-  }
-
-  .cardRow {
-    grid-template-columns: 1fr; 
-    gap: 12px;
-  }
-
-  .card {
-    padding: 12px;
-  }
-
-  .table {
-    min-width: 320px;
-    font-size: 11px;
-  }
-
-  .remarksCell {
-    max-width: 100px;
-    font-size: 11px;
-  }
-
-  .marqueeContainer {
-    height: 80px;
-  }
-
-  .marqueeContent {
-    gap: 10px;
-    animation-duration: 14s;
-  }
-
-  .marqueeContent > div {
-    min-width: 120px;
-    font-size: 12px;
-    padding: 6px;
-  }
-
-  .noEvents {
-    font-size: 14px;
-  }
-}
-
-
-
-.noEventsWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  
-  border-radius: 8px;
-}
-.noEvents {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #777;
-}
+/* ---------------- Events marquee ---------------- */
 .marqueeWrapper {
   overflow: hidden;
   width: 100%;
- 
-  padding: 10px 0;
+  padding: 4px 0 0;
+  margin-bottom: 18px;
   position: relative;
+  /* fade the edges so cards slide in/out instead of being clipped */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
 }
 
 .marqueeTrack {
   display: flex;
   width: max-content;
-  gap: 20px;
-  animation: scrollMarquee 18s linear infinite;
+  gap: 16px;
+  animation: scrollMarquee 30s linear infinite;
 }
-.marqueeContent {
-  display: flex;
-  gap: 20px;
+
+.marqueeWrapper:hover .marqueeTrack {
+  animation-play-state: paused;
 }
+
 @keyframes scrollMarquee {
   from {
     transform: translateX(0);
@@ -400,32 +164,279 @@ td {
   }
 }
 
-
-
-.checkIn:disabled {
-  cursor: not-allowed;     
-}
-.break {
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 14px 14px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: 0.3s;
-  background: #2d8011;
+.loadingText,
+.noEventsWrapper {
   display: flex;
-  align-items: center;   
+  align-items: center;
   justify-content: center;
-  height: fit-content;
-  width: auto;
+  height: 64px;
+  color: var(--text-3);
+  font-size: 14px;
 }
 
+.noEvents {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-3);
+}
 
-@media (max-width: 992px) {
-   .check {
-    display: none;
+/* ---------------- Attendance table ---------------- */
+.tableContainer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  padding: 6px 6px 18px;
+  overflow: hidden;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 16px 14px;
+}
+
+.tableTitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tableHint {
+  font-size: 12.5px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.dropdown {
+  padding: 9px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.dropdown:focus {
+  outline: none;
+  border-color: var(--brand-500);
+  box-shadow: var(--ring);
+}
+
+.tableScroll {
+  overflow-x: auto;
+  padding: 0 16px;
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+/* Gradient lives on the row, not on each cell — per-cell backgrounds
+   restart the gradient and produce visible vertical banding. */
+.table thead tr {
+  background: linear-gradient(90deg, var(--brand-700) 0%, var(--brand-600) 100%);
+}
+
+.table th {
+  padding: 14px 14px;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th:first-child {
+  border-radius: var(--r-md) 0 0 var(--r-md);
+  padding-left: 18px;
+}
+
+.table th:last-child {
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding-right: 18px;
+  text-align: right;
+}
+
+.table td {
+  padding: 15px 14px;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.table td:first-child {
+  padding-left: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.table td:last-child {
+  padding-right: 18px;
+  text-align: right;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--t);
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--surface-2);
+}
+
+.table tbody tr:hover {
+  background: var(--brand-050);
+}
+
+/* Breathing room between the header row and the first record */
+.table tbody tr:first-child td {
+  padding-top: 18px;
+}
+
+.leaveRow td {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.chipLeave {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.remarksCell {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--brand-600) !important;
+  font-weight: 600;
+}
+
+.remarksCell:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- Remark popup ---------------- */
+.popupOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(6, 21, 48, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.popupContent {
+  width: 100%;
+  max-width: 440px;
+  padding: 26px;
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-3);
+  text-align: center;
+  animation: pop 0.22s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
+.popupHeader {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.popupText {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-2);
+  margin-bottom: 22px;
+  word-break: break-word;
+}
+
+.popupCloseBtn {
+  padding: 10px 26px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter var(--t);
+}
+
+.popupCloseBtn:hover {
+  filter: brightness(1.1);
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 900px) {
+  .check {
+    flex: 1 1 auto;
+  }
+
+  .checkIn,
+  .checkOut,
+  .break,
+  .disabledCheckIn {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .timerBox {
+    align-items: center;
+  }
+
+  .check {
+    width: 100%;
+  }
+
+  .checkIn,
+  .checkOut,
+  .break,
+  .disabledCheckIn {
+    width: 100%;
+    padding: 13px;
+  }
+
+}

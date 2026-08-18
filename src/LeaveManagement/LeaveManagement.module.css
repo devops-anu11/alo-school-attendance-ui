@@ -1,444 +1,240 @@
-/* ================= Global Reset ================= */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Poppins, sans-serif;
-}
+/* ============================================================
+   Leave Management
+   ============================================================ */
 
-/* ================= Layout ================= */
 .req {
-  padding: 20px;
+  min-height: 100vh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
 }
 
-.mainContent {
-  padding-top: 100px; /* default desktop */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
- margin-top:70px;
-  justify-content: flex-start;
-}
-
-.col {
-  flex: 1;
-  min-width: 200px;
-  padding: 25px;
-}
-
-.card {
-  border-radius: 7px;
-  box-shadow: 0 2px 5px rgba(175, 175, 175, 0.7);
-  padding: 20px;
-  width: 300px;
-}
-.card p {
-  font-size: 14px;
-}
-
-.card1 {
-  display: flex;
-  justify-content: center;
+/* White pill that sits on the navy hero */
+.heroBtn {
+  display: inline-flex;
   align-items: center;
-  padding: 40px 20px 20px;
-}
-
-.button {
+  gap: 8px;
   padding: 12px 24px;
-  font-size: 16px;
   border: none;
-  border-radius: 4px;
-  background-color: #eab923;
-  color: white;
+  border-radius: var(--r-pill);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
   cursor: pointer;
- margin-top:40px;
-
- 
+  box-shadow: var(--sh-2);
+  transition: transform var(--t), box-shadow var(--t), filter var(--t);
 }
 
-.circle,
-.circle1 {
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  border: none;
+.heroBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-3);
+  filter: brightness(1.08);
 }
-.circle { background-color: #f5b85e; }
-.circle1 { background-color: #66b3ff; }
 
-h4 {
-  line-height: 2;
-  font-size: 16px;
-  font-weight: 500;
-}
-p { font-size: 15px; }
-
+/* ---------------- Table ---------------- */
 .container {
-  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  padding: 12px 12px 20px;
+  overflow-x: auto;
 }
 
-.form {
-  border-radius: 7px;
-  box-shadow: 0 2px 5px rgba(175, 175, 175, 0.7);
-  background-color: #f3f9fc;
-  padding: 30px 20px 20px;
-  margin: 10px;
-}
-
-/* ================= Table ================= */
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: #3c96c70f;
+  min-width: 900px;
+  border-collapse: collapse;
 }
 
-th {
-  background: linear-gradient(to bottom, #0b2d73, #000814);
-  padding: 10px;
+/* Gradient on the row, not per cell — otherwise it restarts in every
+   <th> and the header shows vertical banding. */
+.table thead tr {
+  background: linear-gradient(90deg, var(--brand-700) 0%, var(--brand-600) 100%);
+}
+
+.table th {
+  padding: 14px;
   color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-}
-td {
-  padding: 15px;
-  text-align: center;   /* centers badge */
-  font-size: 13px;
-  font-weight: 500;
-  vertical-align: middle;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
 }
 
+.table th:first-child {
+  border-radius: var(--r-md) 0 0 var(--r-md);
+  padding-left: 18px;
+}
 
-/* Status badges */
-/* Status badges - uniform size & alignment */
+.table th:last-child {
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding-right: 18px;
+  text-align: right;
+}
+
+.table td {
+  padding: 15px 14px;
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.table td:first-child {
+  padding-left: 18px;
+}
+
+.table td:last-child {
+  padding-right: 18px;
+  text-align: right;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:first-child td {
+  padding-top: 18px;
+}
+
+.table tbody tr {
+  transition: background var(--t);
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--surface-2);
+}
+
+.table tbody tr:hover {
+  background: var(--brand-050);
+}
+
+.capitalize {
+  text-transform: capitalize;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ---------------- Status chips ---------------- */
 .pending,
 .approved,
 .rejected {
-  display: inline-flex;         /* keep text centered */
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  min-width: 90px;              /* fixed width for consistency */
-  padding: 6px 12px;            /* equal padding */
-  border-radius: 20px;          /* pill style */
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.2;
-  color: #fff;
-  text-align: center;
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
-/* Individual colors */
-.pending  { background-color: #9ca3af; }  /* gray */
-.approved { background-color: #16a34a; }  /* green */
-.rejected { background-color: #dc2626; }  /* red */
-
-.remarksCell {
-  cursor: pointer;
-  color: #144196;
-  font-weight: 500;
-  max-width: 320px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.pending {
+  background: var(--warn-bg);
+  color: var(--warn);
 }
 
-/* Dropdown remarks */
-.dropdownRow td {
-  padding: 0;
-  background: transparent;
-}
-.remarksDropdown {
-  padding: 10px 15px;
-  margin: 5px 0;
-  background: #f7fbff;
-  border: 1px solid #e6f0ff;
-  border-radius: 5px;
-  max-width: 320px;
-  word-wrap: break-word;
-  text-align: left;
-  font-size: 13px;
+.approved {
+  background: var(--success-bg);
+  color: var(--success);
 }
 
-/* ================= Modals & Popups ================= */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 16px;
-}
-.modal {
-  position: relative;
-  background: #fff;
-  border-radius: 8px;
-  max-width: 640px;
-  width: 100%;
-  padding: 20px 24px;
-  box-shadow: 0 8px 30px rgba(2,6,23,0.2);
-}
-.modalClose {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  font-size: 26px;
-  cursor: pointer;
-}
-.modalTitle {
-  margin: 0 0 8px;
-  font-size: 18px;
-  color: #0b2d73;
-  text-align: center;
-}
-.modalContent {
-  max-height: 60vh;
-  overflow: auto;
-  color: #333;
-  font-size: 14px;
-  line-height: 1.6;
-}
-.modalOk {
-  background: #144196;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.arrowIcon {
-  font-size: 18px;
-  color: #144196;
-  transition: transform 0.3s ease;
-}
-.arrowIcon.open { transform: rotate(180deg); }
-
-.successPopup {
-  position: fixed;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #4BB543;
-  background: #fff;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 400;
-  z-index: 9999;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  animation: fadeInOut 3s forwards;
-}
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+.rejected {
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
-/* Popup */
+/* ---------------- Remark popup ---------------- */
 .popupOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  z-index: 2000;
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(6, 21, 48, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
+
 .popupContent {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 90%;
+  width: 100%;
+  max-width: 440px;
+  padding: 26px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-3);
+  animation: pop 0.22s cubic-bezier(0.34, 1.3, 0.64, 1) both;
 }
-.popupContent h3 { margin-bottom: 10px; }
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.popupContent h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.popupContent p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-2);
+  margin-bottom: 22px;
+  word-break: break-word;
+}
+
 .popupContent button {
-  margin-top: 15px;
-  padding: 8px 15px;
+  padding: 10px 26px;
   border: none;
-  background-color: #144196;
+  border-radius: var(--r-sm);
+  background: var(--brand-gradient);
   color: #fff;
-  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-}
-.popupContent button:hover { background-color: #061530; }
-
-/* ================= Responsive ================= */
-@media (max-width: 992px) {
-  .card1 { padding-top: 30px; text-align: center; }
+  transition: filter var(--t);
 }
 
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-    align-items: center;
-    
-  }
-  .card, .card1 {
-    width: 100%;
-    max-width: 90%;
-  }
-   .req {
-    padding: 10px;
-  }
-  
-  .row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-    
-  }
-
-  .col {
-    min-width: 100%;
-    padding: 20px;
-  }
-
-  .card, .form {
-    width: 100%;
-    max-width: 100%;
-
-  }
-
-  .table {
-    font-size: 12px;
-    border-radius: 6px;
-  }
-  .form { padding: 20px 10px; }
-  .table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .remarksDropdown { max-width: 90%; }
-  .mainContent { padding-top: 80px; } /* adjust top padding */
+.popupContent button:hover {
+  filter: brightness(1.1);
 }
 
-@media (max-width: 480px) {
-  
-  .circle, .circle1 {
-    height: 35px;
-    width: 35px;
-    font-size: 12px;
-  }
-  th, td {
-    font-size: 12px;
-    padding: 6px;
-  }
-  .pending, .approved, .rejected {
-    width: 70px;
-    height: 28px;
-    font-size: 12px;
-  }
-   .card1 {
-    padding: 15px;   /* tighter padding on very small devices */
-  }
-
-  .button {
-    position:relative;
-    margin-top: 5px;   /* almost no gap */
-    font-size: 14px;
-    padding: 10px;
-  left:8%;
-  }
-  .mainContent { padding-top: 60px; } /* tighter on very small */
-  @media (max-width: 480px) {
-  h4 { font-size: 14px; }
-  p { font-size: 13px; }
-
-  .button {
+/* ---------------- Responsive ---------------- */
+@media (max-width: 560px) {
+  .heroBtn {
     width: 100%;
-    font-size: 12px;
-    padding: 10px;
-    display:flex;
     justify-content: center;
   }
 
-  .circle, .circle1 {
-    height: 28px;
-    width: 28px;
-    font-size: 10px;
-  }
-
-  .pending, .approved, .rejected {
-    min-width: 60px;
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-
-  .remarksCell {
-    max-width: 200px;
-    font-size: 12px;
-  }
- 
-
-  .modal {
-    padding: 15px;
-    max-width: 95%;
-  }
-  
-
-  .popupContent {
-    width: 95%;
-    padding: 15px;
-  }
-}
-}
-.capitalize {
-  text-transform: capitalize;
-}
-/* ================= iPad (768px–1024px) ================= */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .row {
-    justify-content: center;
-    gap: 20px;
-    margin-top: 50px;
-  }
-
-  .col {
-    flex: 1 1 45%;   /* two columns layout */
-    min-width: 280px;
-    padding: 20px;
-  }
-
-  .card, .form {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  .button {
-    font-size: 14px;
-    padding: 10px 20px;
-  }
-
-  th, td {
-    font-size: 13px;
-    padding: 10px;
-  }
-
-  .remarksCell {
-    max-width: 250px;
-    font-size: 13px;
-  }
-
-  .modal {
-    max-width: 80%;
-    padding: 20px;
-  }
-
-  .popupContent {
-    width: 80%;
-    max-width: 360px;
+  .container {
+    padding: 8px 8px 16px;
   }
 }
