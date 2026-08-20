@@ -18,7 +18,7 @@ import {
   FiFileText,
   FiAward,
   FiMessageSquare,
-  FiShield,
+  // FiShield,
   FiSend,
   FiX,
 } from "react-icons/fi";
@@ -32,7 +32,7 @@ const NAV_ITEMS = [
   { label: "Leave", path: "leave-management", icon: FiSend },
   { label: "Academics", path: "academics", icon: FiAward },
   { label: "Complaint", path: "complaint", icon: FiMessageSquare },
-  { label: "Harassment", path: "harassment", icon: FiShield },
+  // { label: "Harassment", path: "harassment", icon: FiShield },
   { label: "Policies", path: "policies", icon: FiFileText },
 ];
 

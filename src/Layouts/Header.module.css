@@ -12,11 +12,12 @@
 
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 0 var(--gutter);
+  gap: 16px;
+  padding: 0 16px;
 
   background: var(--brand-gradient);
-  box-shadow: 0 2px 18px rgba(6, 21, 48, 0.28);
+  box-shadow: 0 2px 12px rgba(6, 21, 48, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 /* ----------------- Logo ----------------- */
@@ -25,19 +26,19 @@
   align-items: center;
   flex: 0 0 auto;
   height: 100%;
-  padding: 14px 0;
+  padding: 10px 0;
   cursor: pointer;
-  transition: transform var(--t);
+  transition: transform 0.2s ease;
 }
 
 .logoWrapper:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .logo {
   height: 100%;
   width: auto;
-  max-width: 150px;
+  max-width: 140px;
   object-fit: contain;
 }
 
@@ -45,27 +46,27 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   flex: 1 1 auto;
   min-width: 0;
   justify-content: center;
+  margin: 0 16px;
 }
 
 .linkBtn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   white-space: nowrap;
-
   background: transparent;
   border: none;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
   font-weight: 500;
-  padding: 9px 14px;
-  border-radius: var(--r-pill);
-  transition: background var(--t), color var(--t), transform var(--t);
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 .linkIcon {
@@ -74,20 +75,20 @@
 }
 
 .linkBtn:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.15);
   color: #fff;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .activeLink {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   color: var(--brand-700);
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .activeLink:hover {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   color: var(--brand-700);
 }
 
@@ -95,7 +96,7 @@
 .rightSection {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex: 0 0 auto;
   margin-left: auto;
 }
@@ -108,90 +109,102 @@
   width: 40px;
   height: 40px;
   border: none;
-  border-radius: var(--r-pill);
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   font-size: 18px;
   cursor: pointer;
-  transition: background var(--t), transform var(--t);
+  transition: all 0.2s ease;
 }
 
 .iconBtn:hover {
-  background: rgba(255, 255, 255, 0.24);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
 }
 
 .logoutBtn:hover {
-  background: var(--danger);
+  background: rgba(255, 61, 61, 0.8);
 }
 
 .badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: var(--r-pill);
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
   background: #ff4d4f;
   border: 2px solid var(--brand-700);
   color: #fff;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  line-height: 14px;
+  line-height: 16px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ----------------- Profile ----------------- */
+/* ----------------- Profile section----------------- */
 .profile {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 5px 14px 5px 5px;
-  border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 10px 5px 5px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .profilePic {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.4);
 }
 
 .profileFallback {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .profileInfo h4 {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #fff;
-  line-height: 1.25;
-  max-width: 150px;
+  line-height: 1.2;
+  max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .profileInfo p {
-  margin: 0;
-  font-size: 11px;
+  margin: 2px 0 0;
+  font-size: 10px;
   color: rgba(255, 255, 255, 0.7);
-  line-height: 1.3;
-  max-width: 150px;
+  line-height: 1.2;
+  max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* ----------------- Notification dropdown ----------------- */
+/* ============================================================
+   Notification dropdown
+   ============================================================ */
+
 .notificationWrapper {
   position: relative;
   display: flex;
@@ -200,24 +213,24 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 14px);
+  top: calc(100% + 12px);
   right: 0;
-  width: 380px;
+  width: 360px;
   max-width: calc(100vw - 24px);
 
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  box-shadow: var(--sh-3);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   z-index: 1200;
-  animation: dropIn 0.18s ease-out both;
+  animation: dropIn 0.2s ease-out both;
 }
 
 @keyframes dropIn {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
@@ -235,7 +248,7 @@
 }
 
 .dropdownHeader {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text);
   margin: 0;
@@ -249,20 +262,20 @@
   height: 28px;
   background: none;
   border: none;
-  border-radius: var(--r-sm);
+  border-radius: 6px;
   font-size: 18px;
   cursor: pointer;
   color: var(--text-3);
-  transition: background var(--t), color var(--t);
+  transition: all 0.2s ease;
 }
 
 .closeBtn:hover {
-  background: var(--danger-bg);
+  background: rgba(255, 77, 79, 0.1);
   color: var(--danger);
 }
 
 .dropdownBody {
-  max-height: 340px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
@@ -272,7 +285,7 @@
   gap: 12px;
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
-  transition: background var(--t);
+  transition: background 0.15s ease;
 }
 
 .notificationItem:last-child {
@@ -294,15 +307,15 @@
 
 .textBlock h4 {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text);
   line-height: 1.4;
 }
 
 .textBlock p {
-  margin: 2px 0 0;
-  font-size: 12px;
+  margin: 3px 0 0;
+  font-size: 11px;
   color: var(--text-3);
 }
 
@@ -312,21 +325,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 46px;
+  min-width: 44px;
   padding: 6px 4px;
   background: var(--brand-100);
-  border-radius: var(--r-sm);
+  border-radius: 6px;
   line-height: 1.1;
 }
 
 .day {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--brand-700);
 }
 
 .monthYear {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--brand-600);
@@ -334,53 +347,64 @@
 
 .noNotifications {
   text-align: center;
-  padding: 34px 16px;
+  padding: 40px 16px;
   color: var(--text-3);
-  font-size: 14px;
+  font-size: 13px;
 }
 
-/* ----------------- Hamburger ----------------- */
+/* ============================================================
+   Hamburger menu
+   ============================================================ */
+
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   width: 40px;
   height: 40px;
-  padding: 0 8px;
+  padding: 8px;
   border: none;
-  border-radius: var(--r-pill);
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .bar {
   width: 100%;
   height: 2px;
-  border-radius: 2px;
+  border-radius: 1px;
   background: #fff;
-  transition: transform var(--t), opacity var(--t);
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .bar.open:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+  transform: translateY(6px) rotate(45deg);
 }
 .bar.open:nth-child(2) {
   opacity: 0;
 }
 .bar.open:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+  transform: translateY(-6px) rotate(-45deg);
 }
 
-/* ----------------- Mobile drawer ----------------- */
+/* ============================================================
+   Mobile drawer
+   ============================================================ */
+
 .scrim {
   position: fixed;
   inset: 0;
-  background: rgba(6, 21, 48, 0.5);
-  backdrop-filter: blur(2px);
+  background: rgba(6, 21, 48, 0.4);
+  backdrop-filter: blur(4px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--t-slow);
+  transition: opacity 0.3s ease;
   z-index: 1100;
 }
 
@@ -394,20 +418,21 @@
   top: 0;
   right: 0;
   height: 100dvh;
-  width: 300px;
-  max-width: 86vw;
+  width: 280px;
+  max-width: 85vw;
   z-index: 1101;
 
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 18px 16px 24px;
+  padding: 20px 16px 24px;
 
   background: var(--brand-gradient);
-  box-shadow: var(--sh-3);
-  transform: translateX(105%);
-  transition: transform var(--t-slow);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateX(110%);
+  transition: transform 0.3s ease;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .drawerOpen {
@@ -418,9 +443,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 12px;
-  margin-bottom: 10px;
-  border-radius: var(--r-md);
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -435,25 +460,25 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 13px 14px;
+  padding: 12px 14px;
   border: none;
-  border-radius: var(--r-md);
+  border-radius: 8px;
   background: transparent;
   color: rgba(255, 255, 255, 0.85);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
-  transition: background var(--t), color var(--t);
+  transition: all 0.2s ease;
 }
 
 .drawerLink:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   color: #fff;
 }
 
 .drawerLinkActive {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   color: var(--brand-700);
   font-weight: 600;
 }
@@ -467,81 +492,150 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: auto;
-  padding: 13px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: var(--r-md);
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   background: transparent;
   color: #ff8f8a;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--t), color var(--t);
+  transition: all 0.2s ease;
 }
 
 .drawerLogout:hover {
-  background: var(--danger);
+  background: rgba(255, 61, 61, 0.85);
   color: #fff;
   border-color: transparent;
 }
 
 /* ============================================================
-   Responsive
+   Responsive Design
    ============================================================ */
 
-/* Nav labels get tight before the bar wraps — drop to icons only. */
+/* Desktop to tablet - compress nav items */
 @media (max-width: 1400px) {
   .linkBtn {
-    padding: 9px 11px;
-    font-size: 13px;
+    padding: 8px 10px;
+    font-size: 12px;
+    gap: 4px;
   }
+  
   .profileInfo h4,
   .profileInfo p {
-    max-width: 110px;
+    max-width: 90px;
   }
 }
 
-/* Seven menu items no longer fit comfortably — switch to the drawer. */
+/* Tablet - hide desktop nav, show hamburger */
 @media (max-width: 1180px) {
+  .headerContainer {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  
   .nav {
     display: none;
   }
+  
   .hamburger {
     display: flex;
   }
+  
+  .logo {
+    max-width: 130px;
+  }
 }
 
-@media (max-width: 860px) {
-  .profile {
-    padding: 4px;
-  }
+/* Large mobile - hide profile info */
+@media (max-width: 900px) {
   .profileInfo {
     display: none;
   }
+  
+  .profile {
+    padding: 5px;
+    gap: 0;
+  }
+  
+  .dropdown {
+    width: 320px;
+  }
 }
 
-@media (max-width: 560px) {
+/* Mobile - hide profile section */
+@media (max-width: 640px) {
   .headerContainer {
-    gap: 10px;
-  }
-  .rightSection {
     gap: 8px;
+    padding: 0 10px;
   }
+  
+  .rightSection {
+    gap: 6px;
+  }
+  
   .profile {
     display: none;
   }
+  
   .iconBtn,
   .hamburger {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
   }
+  
+  .logo {
+    max-width: 110px;
+  }
+  
   .dropdown {
     position: fixed;
     top: calc(var(--header-h) + 8px);
-    right: 12px;
-    left: 12px;
+    right: 8px;
+    left: 8px;
     width: auto;
     max-width: none;
+    border-radius: 8px;
+  }
+  
+  .drawer {
+    width: 75vw;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .headerContainer {
+    gap: 6px;
+    padding: 0 8px;
+  }
+  
+  .logo {
+    max-width: 100px;
+  }
+  
+  .iconBtn,
+  .hamburger {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+  
+  .badge {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    font-size: 8px;
+  }
+  
+  .dropdown {
+    width: calc(100vw - 16px);
+  }
+  
+  .drawer {
+    width: 85vw;
   }
 }

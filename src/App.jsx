@@ -9,8 +9,7 @@ import PrivateRoute from "./api/PrivateRouter";
 import Header from "./Layouts/Header";
 import { useState, useEffect } from "react";
 import ScrollToTop from "./ScrollToTop";   
-import Complaint from "./Complaint/Complaint";
-import Harassment from "./Harassement/Harassment";
+import Complaint from "./Complaint&Harassement/Complaint/Complaint";
 import DailyTask from "./DailyTask/DailyTask";
 
 function App() {
@@ -158,18 +157,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/harassment/:userId"
-          element={
-            isCompleted ? (
-              <Navigate to={`/academics/${userId}`} replace />
-            ) : (
-              <PrivateRoute isAuthenticated={isAuthenticated}>
-                <Harassment/>
-              </PrivateRoute>
-            )
-          }
-        />
 
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/login" replace />} />

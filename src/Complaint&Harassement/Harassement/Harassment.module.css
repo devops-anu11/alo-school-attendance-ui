@@ -1,0 +1,131 @@
+
+
+.container {
+  min-height: 100vh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + 28px) var(--gutter) 56px;
+  animation: fadeUp 0.35s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-2);
+}
+
+
+.notice {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--info);
+  border-radius: var(--r-sm);
+  background: var(--info-bg);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #0a4f85;
+}
+
+.notice strong {
+  color: var(--info);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 22px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.formGroup textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 13px;
+  resize: vertical;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text);
+  transition: border-color var(--t), box-shadow var(--t);
+}
+
+.formGroup textarea::placeholder {
+  color: var(--text-3);
+}
+
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--brand-500);
+  box-shadow: var(--ring);
+}
+
+.error {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--danger);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 13px 24px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sh-1);
+  transition: transform var(--t), filter var(--t), box-shadow var(--t);
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: var(--sh-2);
+}
+
+.customToast {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+}
+.loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.submitBtn:disabled {
+  cursor: not-allowed;
+}
+@media (max-width: 560px) {
+  .card {
+    padding: 22px 18px;
+  }
+}
