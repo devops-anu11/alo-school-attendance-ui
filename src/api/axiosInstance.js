@@ -3,7 +3,7 @@ import axios from "axios";
 const axiosInstance = axios.create({
   // baseURL: "http://localhost:5000/api",
   //  baseURL: "https://dev.alosodt.com/api",
-      baseURL: "https://alosodt.com/api",
+      baseURL: "https://www.alosodt.com/api",
 });
 
 axiosInstance.interceptors.request.use((config) => {
